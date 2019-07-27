@@ -130,12 +130,12 @@ echo
 ###php
 echo -e "\033[31m   Select php version \033[0m"
 echo "	1 5.3.29
-	2 5.4.45
+		2 5.4.45
     	3 5.5.38
     	4 5.6.38
     	5 7.1.25
-	6 7.2.15
-	7 7.3.2"
+		6 7.2.15
+		7 7.3.2"
 read -p "   Please Input 1,2,3,4,5,6,7: " PHP_ID
 [ $PHP_ID == 1 ] && PHP_VER="5.3.29"
 [ $PHP_ID == 2 ] && PHP_VER="5.4.45"
