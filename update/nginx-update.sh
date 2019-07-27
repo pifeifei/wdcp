@@ -101,7 +101,7 @@ else
         ln -sf /usr/lib64/libpng.so /usr/lib/
     fi
     ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-    ntpdate tiger.sina.com.cn
+    ntpdate tiger.sina.com.cn > /dev/null 2>&1 && echo 
     hwclock -w
 fi
 
