@@ -1,10 +1,13 @@
 #  wdcp 安装(非官方)
 
-> 如需官方版本请移至 https://www.wdcp.net/install.html
+> * 如需官方版本请移至 https://www.wdcp.net/install.html
 >
-> 本脚本主要针对软件升级使用（如 apache、nginx 升级）
+> * 本脚本主要针对软件升级使用（如 apache、nginx 升级）
 >
-> 基于 wdcp 3.3 制作
+> * 基于 wdcp 3.3 制作
+>
+
+
 
 
 
@@ -15,8 +18,10 @@
 git clone https://github.com/pifeifei/wdcp.git
 # 升级
 cd wdcp
-./update/apache_update.sh 2.4.30
-./update/nginx_update.sh 1.16.0
+./update/apache_update.sh cus
+./update/nginx_update.sh cus
+# 如无法升级, 请手动删除文件夹 inf 对应软件的 txt 文件, 
+# 如升级 apache, rm inf/apache.txt; 升级 lanmp 中的apache, rm inf/na.txt
 
 
 
