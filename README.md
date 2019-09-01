@@ -37,4 +37,19 @@ sh lib/tomcat.sh
 
 # nodejs应用环境，可选安装,默认版本为v10.13
 sh lib/nodejs.sh
+
+# 升级 apache
+sh update/apache-update.sh
+
+# 升级 nginx
+sh update/nginx-update.sh
+
+# 升级 php 到版本 7.2.22
+sh php-update.sh 7.2.22
+
+# 为 php 安装 swoole 扩展, 请根据当前 wdcp 安装版本选择
+sh update/php-swoole-install.sh
+
+# 为 php 安装 swoole 扩展2, 为目录 /www/wdlinux/phps/ 安装swoole  扩展
+sh update/phps-swoole-install.sh
 ```
