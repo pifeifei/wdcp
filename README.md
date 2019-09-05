@@ -1,12 +1,12 @@
 #  wdcp 软件包升级(非官方)
 
-> * 如需官方版本，请移至 [wdcp](https://www.wdcp.net/install.html)
+> * 如需官方版本，请移至 [`wdcp`](https://www.wdcp.net/install.html)
 > * 基于 wdcp 3.3 制作
 > * 本脚本主要针对软件升级，升级版本包含：
->   * nginx 
->   * apache
->   * php 
->   * swoole 安装
+>   * `nginx `
+>   * `apache`
+>   * `php`
+>   * `swoole` 安装
 >
 
 
@@ -49,6 +49,10 @@ sh lib/tomcat.sh
 sh lib/nodejs.sh
 
 ```
+
+
+
+##### 如果对你有帮助，请 `star` 支持下作者
 
 
 
