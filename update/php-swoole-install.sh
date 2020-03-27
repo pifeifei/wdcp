@@ -47,7 +47,7 @@ CPUS=`grep processor /proc/cpuinfo | wc -l`
 swoole110="1.10.5"
 swoole200="2.0.12"
 swoole202="2.2.0"
-swoole404="4.4.5"
+swoole404="4.4.16"
 phps="7.2.22 5.4.45 5.5.38 5.6.40 7.0.33 7.1.28 7.3.4"
 if [ $R7 == 0 ];then
 	phps="5.3.29 "${phps}
@@ -90,7 +90,7 @@ function swoole_ins {
 	[ $? != 0 ] && err_exit "phpize err"
 	#./configure --with-php-config=$IN_DIR/php/bin/php-config
 	./configure --with-php-config=$IN_DIR/php/bin/php-config --enable-sockets \
-		--enable-openssl  --enable-http2 --enable-swoole --enable-mysqlnd
+        --enable-openssl  --enable-http2 --enable-swoole --enable-mysqlnd
 	#  --enable-coroutine-postgresql --enable-async-redis --enable-async-httpclient 
 	[ $? != 0 ] && err_exit "swoole configure err"
 	make clean

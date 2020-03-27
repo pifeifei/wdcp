@@ -33,7 +33,7 @@ if uname -m | grep -q 'x86_64'; then
 fi
 CPUS=`grep processor /proc/cpuinfo | wc -l`
 
-phps="5.4.45 5.5.38 5.6.30 7.0.33 7.1.25 7.2.13 7.3.1"
+phps="5.4.45 5.5.38 5.6.40 7.0.33 7.1.33 7.2.29 7.3.16"
 if [ $R7 == 0 ];then
 	phps="5.2.17 5.3.29 "${phps}
 fi

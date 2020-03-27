@@ -81,69 +81,63 @@ if [ "$SERVER_ID" != 2 ];then
 ###apache
 echo -e "\033[31m   Select apache version \033[0m"
 echo "	1 2.2.34
-	2 2.4.38"
+	2 2.4.43"
 read -p "   Please Input 1,2: " APA_ID
 [ $APA_ID == 1 ] && APA_VER="2.2.34"
-[ $APA_ID == 2 ] && APA_VER="2.4.38"
+[ $APA_ID == 2 ] && APA_VER="2.4.43"
 echo
 fi
 if [ "$SERVER_ID" != 1 ];then
 ###nginx
 echo -e "\033[31m   Select nginx version \033[0m"
-echo "	1 1.0.15
-	2 1.2.9
-	3 1.4.7
-	4 1.6.3
-	5 1.8.1
-	6 1.10.3
-	7 1.12.2
-	8 1.14.2
-	9 1.15.8"
-read -p "   Please Input 1,2,3,4,5,6,7,8,9: " NGI_ID
-[ $NGI_ID == 1 ] && NGI_VER="1.0.15"
-[ $NGI_ID == 2 ] && NGI_VER="1.2.9"
-[ $NGI_ID == 3 ] && NGI_VER="1.4.7"
-[ $NGI_ID == 4 ] && NGI_VER="1.6.3"
-[ $NGI_ID == 5 ] && NGI_VER="1.8.1"
-[ $NGI_ID == 6 ] && NGI_VER="1.10.3"
-[ $NGI_ID == 7 ] && NGI_VER="1.12.2"
-[ $NGI_ID == 8 ] && NGI_VER="1.14.2"
-[ $NGI_ID == 9 ] && NGI_VER="1.15.8"
+echo "	1 1.8.1
+	2 1.10.3
+	3 1.12.2
+	4 1.14.2
+	5 1.16.1"
+read -p "   Please Input 1,2,3,4,5: " NGI_ID
+[ $NGI_ID == 1 ] && NGI_VER="1.8.1"
+[ $NGI_ID == 2 ] && NGI_VER="1.10.3"
+[ $NGI_ID == 3 ] && NGI_VER="1.12.2"
+[ $NGI_ID == 4 ] && NGI_VER="1.14.2"
+[ $NGI_ID == 5 ] && NGI_VER="1.16.1"
 
 echo
 fi
 
 ###mysql
 echo -e "\033[31m   Select mysql version \033[0m"
-echo "	1 5.5.62
-	2 5.6.42
-	3 5.7.25"
+echo "	1 5.5.63
+	2 5.6.47
+	3 5.7.29"
 	#4 8.0.14"
 read -p "   Please Input 1,2,3: " MYS_ID
-[ $MYS_ID == 1 ] && MYS_VER="5.5.62"
-[ $MYS_ID == 2 ] && MYS_VER="5.6.42"
-[ $MYS_ID == 3 ] && MYS_VER="5.7.25"
-[ $MYS_ID == 4 ] && MYS_VER="8.0.14"
+[ $MYS_ID == 1 ] && MYS_VER="5.5.63"
+[ $MYS_ID == 2 ] && MYS_VER="5.6.47"
+[ $MYS_ID == 3 ] && MYS_VER="5.7.29"
+#[ $MYS_ID == 4 ] && MYS_VER="8.0.14"
 
 echo
 
 ###php
 echo -e "\033[31m   Select php version \033[0m"
 echo "	1 5.3.29
-		2 5.4.45
-    	3 5.5.38
-    	4 5.6.38
-    	5 7.1.25
-		6 7.2.15
-		7 7.3.2"
-read -p "   Please Input 1,2,3,4,5,6,7: " PHP_ID
+        2 5.4.45
+        3 5.5.38
+        4 5.6.40
+        5 7.1.33
+        6 7.2.29
+        7 7.3.16
+        8 7.4.4"
+read -p "   Please Input 1,2,3,4,5,6,7,8: " PHP_ID
 [ $PHP_ID == 1 ] && PHP_VER="5.3.29"
 [ $PHP_ID == 2 ] && PHP_VER="5.4.45"
 [ $PHP_ID == 3 ] && PHP_VER="5.5.38"
-[ $PHP_ID == 4 ] && PHP_VER="5.6.38"
-[ $PHP_ID == 5 ] && PHP_VER="7.1.25" && P7=1
-[ $PHP_ID == 6 ] && PHP_VER="7.2.15" && P7=1
-[ $PHP_ID == 7 ] && PHP_VER="7.3.2" && P7=1
+[ $PHP_ID == 4 ] && PHP_VER="5.6.40"
+[ $PHP_ID == 5 ] && PHP_VER="7.1.33" && P7=1
+[ $PHP_ID == 6 ] && PHP_VER="7.2.29" && P7=1
+[ $PHP_ID == 7 ] && PHP_VER="7.3.16" && P7=1
+[ $PHP_ID == 8 ] && PHP_VER="7.4.4" && P7=1
 fi
  
 # make sure network connection usable.

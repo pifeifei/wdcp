@@ -83,23 +83,23 @@ echo
 
 ###php
 # wdcp php version: 5.3.29 5.4.45 5.5.38 5.6.38 7.1.25 7.2.15 7.3.2
-# latest php version: 5.3.29 5.4.45 5.5.38 5.6.38 7.1.25 7.2.2 7.3.9
+# latest php version: 5.3.29 5.4.45 5.5.38 5.6.40 7.1.33 7.2.29 7.3.16
 echo -e "\033[31m   Select php version \033[0m"
 echo "	1 5.3.29
         2 5.4.45
         3 5.5.38
-        4 5.6.38
-        5 7.1.25
-        6 7.2.22
-        7 7.3.9"
+        4 5.6.40
+        5 7.1.33
+        6 7.2.29
+        7 7.3.16"
 read -p "   Please Input 1,2,3,4,5,6,7: " PHP_ID
 [ $PHP_ID == 1 ] && PHP_VER="5.3.29"
 [ $PHP_ID == 2 ] && PHP_VER="5.4.45"
 [ $PHP_ID == 3 ] && PHP_VER="5.5.38"
-[ $PHP_ID == 4 ] && PHP_VER="5.6.38"
-[ $PHP_ID == 5 ] && PHP_VER="7.1.25" && P7=1
-[ $PHP_ID == 6 ] && PHP_VER="7.2.22" && P7=1
-[ $PHP_ID == 7 ] && PHP_VER="7.3.9" && P7=1
+[ $PHP_ID == 4 ] && PHP_VER="5.6.40"
+[ $PHP_ID == 5 ] && PHP_VER="7.1.33" && P7=1
+[ $PHP_ID == 6 ] && PHP_VER="7.2.29" && P7=1
+[ $PHP_ID == 7 ] && PHP_VER="7.3.16" && P7=1
 fi
 
 
@@ -236,4 +236,3 @@ fi
 
 start_srv
 php_in_finsh
-

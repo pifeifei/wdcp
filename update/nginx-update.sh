@@ -50,25 +50,17 @@ echo
 if [ "$SERVER_ID" != 1 ];then
 ###nginx
 echo -e "\033[31m   Select nginx version \033[0m"
-echo "	1 1.0.15
-	2 1.2.9
-	3 1.4.7
-	4 1.6.3
-	5 1.8.1
-	6 1.10.3
-	7 1.12.2
-	8 1.14.2
-	9 1.15.8"
-read -p "   Please Input 1,2,3,4,5,6,7,8,9: " NGI_ID
-[ $NGI_ID == 1 ] && NGI_VER="1.0.15"
-[ $NGI_ID == 2 ] && NGI_VER="1.2.9"
-[ $NGI_ID == 3 ] && NGI_VER="1.4.7"
-[ $NGI_ID == 4 ] && NGI_VER="1.6.3"
-[ $NGI_ID == 5 ] && NGI_VER="1.8.1"
-[ $NGI_ID == 6 ] && NGI_VER="1.10.3"
-[ $NGI_ID == 7 ] && NGI_VER="1.12.2"
-[ $NGI_ID == 8 ] && NGI_VER="1.14.2"
-[ $NGI_ID == 9 ] && NGI_VER="1.15.8"
+echo "	1 1.8.1
+	2 1.10.3
+	3 1.12.2
+	4 1.14.2
+	5 1.16.1"
+read -p "   Please Input 1,2,3,4,5: " NGI_ID
+[ $NGI_ID == 1 ] && NGI_VER="1.8.1"
+[ $NGI_ID == 2 ] && NGI_VER="1.10.3"
+[ $NGI_ID == 3 ] && NGI_VER="1.12.2"
+[ $NGI_ID == 4 ] && NGI_VER="1.14.2"
+[ $NGI_ID == 5 ] && NGI_VER="1.16.1"
 
 echo
 fi

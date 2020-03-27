@@ -5,6 +5,7 @@ IN_SRC=${IN_PWD}/src
 IN_DIR="/www/wdlinux"
 IN_LOG=${IN_PWD}/logs
 INF=${IN_PWD}/inf
+PFF_URL="http://dl.pifeifei.com/files"
 DL_URL="http://dl.wdlinux.cn/files"
 WD_URL="http://www.wdlinux.cn"
 [ ! -d $IN_SRC ] && mkdir -p $IN_SRC
@@ -35,8 +36,8 @@ if [ $X86 == 1 ]; then
     ln -sf /usr/lib64/libpng.so /usr/lib/
 fi
 
-
-phps="5.4.45 5.5.38 5.6.38 7.0.33 7.1.25 7.2.15 7.3.2"
+# 安装时请修改为自己所安装的版本号
+phps="5.4.45 5.5.38 5.6.40 7.0.33 7.1.33 7.2.29 7.3.16"
 if [ $R7 == 0 ];then
 	phps="5.2.17 5.3.29 "${phps}
 fi
@@ -88,7 +89,7 @@ function php_ins {
 	echo
 	phpfile="php-${phpv}.tar.gz"
 	cd $IN_SRC
-	fileurl=$DL_URL/php/$phpfile && filechk
+	fileurl=$PFF_URL/php/$phpfile && filechk
 	tar zxvf $phpfile || rm -fr php-${phpv}*
 	cd php-${phpv}
 	$phpcs
