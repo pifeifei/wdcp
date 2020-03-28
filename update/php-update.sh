@@ -66,7 +66,12 @@ sleep 0.1
 read -p "Please Input 1,3,4,5: " SERVER_ID
 
 if [[ $SERVER_ID == 2 ]]; then
-    SERVER="nginx"
+    echo "
+Please use the following command to upgrade
+    sh lib/phps.php
+    "
+    exit
+    # SERVER="nginx"
 elif [[ $SERVER_ID == 1 ]]; then
     SERVER="apache"
 elif [[ $SERVER_ID == 3 ]]; then
@@ -130,17 +135,14 @@ else
     hwclock -w
 fi
 
-
-cd $IN_SRC
-
 [ $IN_DIR = "/www/wdlinux" ] || IN_DIR_ME=1
 
-function phps_ins {
-	sh ../lib/phps.sh $PHP_VER 1
-	sh ../lib/phps_zend.sh $PHP_VER
-	sh ../lib/phps_memcache.sh $PHP_VER	
-	sh ../lib/phps_redis.sh $PHP_VER	
-}
+# function phps_ins {
+# 	sh ./lib/phps.sh $PHP_VER 1
+# 	sh ./lib/phps_zend.sh $PHP_VER
+# 	sh ./lib/phps_memcache.sh $PHP_VER	
+# 	sh ./lib/phps_redis.sh $PHP_VER	
+# }
 
 function redisp_ins {
     if [ ! -f $redisp_inf ];then
@@ -168,32 +170,32 @@ extension=redis.so" >> /www/wdlinux/etc/php.ini
     fi
 }
 
-function in_all {
-    #na_ins
-    SERVER="nginx";phps_ins
-    #zend_ins
-    rm -f $php_inf $eac_inf $zend_inf
-    SERVER="apache"; php_ins
-    zend_ins
-    memcache_ins
-    redisp_ins
-}
+# function in_all {
+#     #na_ins
+#     SERVER="nginx";phps_ins
+#     #zend_ins
+#     rm -f $php_inf $eac_inf $zend_inf
+#     SERVER="apache"; php_ins
+#     zend_ins
+#     memcache_ins
+#     redisp_ins
+# }
 
 # start services
 function start_srv {
-    #[ -f $conf_inf ] && return
+    [ -f $php_inf ] && return
     echo
     echo "starting..."
     
 	if [ SERVER="nginx" ]; then
-		service nginxd reload
+        echo "Can't just use nginx"
+        exit
 	elif [ SERVER="apache" ]; then
-		service httpd reload
+		service httpd restart
 	else
-		service nginxd reload
-		service httpd reload
+		service httpd restart
 	fi
-	
+
     
 	if [ $R7 == 1 ];then
 	systemctl stop firewalld.service
@@ -216,23 +218,27 @@ function php_in_finsh {
 
 ###install
 geturl
-if [ $SERVER == "all" ]; then
-    in_all
-elif [ $SERVER == "nginx" ];then
-    NPD=${PHP_VER:0:1}${PHP_VER:2:1}
-    NPDS=${PHP_VER:0:1}${PHP_VER:1:1}${PHP_VER:2:1}
-    phps_ins
-    memcache_ins
-	redisp_ins
-    NPS=1
-else
+# if [ $SERVER == "all" ]; then
+#     in_all
+# elif [ $SERVER == "nginx" ];then
+#     NPD=${PHP_VER:0:1}${PHP_VER:2:1}
+#     NPDS=${PHP_VER:0:1}${PHP_VER:1:1}${PHP_VER:2:1}
+#     phps_ins
+#     memcache_ins
+# 	redisp_ins
+#     NPS=1
+# else
+
+    [ -f $IN_DIR/apache/modules/libphp7.so ] && mv -f $IN_DIR/apache/modules/libphp7.so $IN_DIR/apache/modules/libphp7.so.bk
+    [ -f $IN_DIR/apache/modules/libphp5.so ] && mv -f $IN_DIR/apache/modules/libphp5.so $IN_DIR/apache/modules/libphp5.so.bk
+    [ "$SERVER" == "all" ] && SERVER='apache'
     php_ins
 	[ -L $IN_DIR/apache_php ] && rm -f $IN_DIR/apache_php && ln -s $IN_DIR/apache_php-$PHP_VER  $IN_DIR/apache_php
 	[ -L $IN_DIR/nginx_php ] && rm -f $IN_DIR/nginx_php && ln -s $IN_DIR/nginx_php-$PHP_VER  $IN_DIR/nginx_php
     zend_ins
     memcache_ins
     redisp_ins
-fi
+# fi
 
 start_srv
 php_in_finsh

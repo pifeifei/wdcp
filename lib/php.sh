@@ -35,6 +35,7 @@ function php_ins {
         PHP_DIR="def_php-$PHP_VER"
         PHP_DIRS="def_php"
     fi
+    [ ! -f configure ] && ./buildconf --force
     ./configure --prefix=$IN_DIR/$PHP_DIR \
         --with-config-file-path=$IN_DIR/$PHP_DIR/etc \
 	--enable-mysqlnd --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \

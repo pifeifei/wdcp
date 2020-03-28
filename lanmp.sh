@@ -81,10 +81,10 @@ if [ "$SERVER_ID" != 2 ];then
 ###apache
 echo -e "\033[31m   Select apache version \033[0m"
 echo "	1 2.2.34
-	2 2.4.43"
+	2 2.4.41"
 read -p "   Please Input 1,2: " APA_ID
 [ $APA_ID == 1 ] && APA_VER="2.2.34"
-[ $APA_ID == 2 ] && APA_VER="2.4.43"
+[ $APA_ID == 2 ] && APA_VER="2.4.41"
 echo
 fi
 if [ "$SERVER_ID" != 1 ];then

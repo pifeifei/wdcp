@@ -52,10 +52,10 @@ if [ "$SERVER_ID" != 2 ];then
 ###apache
 echo -e "\033[31m   Select apache version \033[0m"
 echo "	1 2.2.34
-	2 2.4.43"
+	2 2.4.41"
 read -p "   Please Input 1,2: " APA_ID
 [ $APA_ID == 1 ] && APA_VER="2.2.34"
-[ $APA_ID == 2 ] && APA_VER="2.4.43"
+[ $APA_ID == 2 ] && APA_VER="2.4.41"
 echo
 fi
 fi
@@ -187,7 +187,7 @@ function apache_in_finsh {
     echo
     echo
     echo
-    echo -e "      \033[31mCongratulations ,apache install is complete"
+    echo -e "      \033[31mCongratulations, apache install is complete"
     echo -e "      visit http://ip"
     echo -e "      wdCP http://ip:8080"
     echo -e "      more infomation please visit http://www.wdlinux.cn/bbs/\033[0m"

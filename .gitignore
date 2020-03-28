@@ -2,3 +2,6 @@ inf/
 *.tar.gz
 logs/
 src/
+
+# 编辑器
+.vscode

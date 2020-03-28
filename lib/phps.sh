@@ -92,6 +92,7 @@ function php_ins {
 	fileurl=$PFF_URL/php/$phpfile && filechk
 	tar zxvf $phpfile || rm -fr php-${phpv}*
 	cd php-${phpv}
+	[ ! -f configure ] && ./buildconf --force
 	$phpcs
 	if [ $phpd -eq 52 ];then
 		ln -s /www/wdlinux/mysql/lib/libmysql* /usr/lib/
