@@ -43,7 +43,6 @@ function php_ins {
         --with-freetype-dir --with-jpeg-dir \
         --with-png-dir --with-zlib \
         --with-libxml-dir=/usr --enable-xml \
-        --disable-rpath \
         --enable-inline-optimization --with-curl \
         --enable-mbregex --enable-mbstring \
         --with-mcrypt=/usr --with-gd \
