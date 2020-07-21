@@ -23,7 +23,7 @@ function apache_ins {
     [ $? != 0 ] && err_exit "apache make err"
     make install 
     [ $? != 0 ] && err_exit "apache install err"
-	[ -e $IN_DIR/apache ] && [ -L $IN_DIR/apache ] && rm -f $IN_DIR/apache
+    [ -e $IN_DIR/apache ] && [ -L $IN_DIR/apache ] && rm -f $IN_DIR/apache
     ln -sf $IN_DIR/httpd-$APA_VER $IN_DIR/apache
     sed -i 's/User daemon/User www/g' $IN_DIR/apache/conf/httpd.conf
     sed -i 's/Group daemon/Group www/g' $IN_DIR/apache/conf/httpd.conf

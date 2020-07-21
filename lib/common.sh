@@ -88,7 +88,7 @@ function yum_apt_ins {
         libcurl4-openssl-dev libssl-dev patch libmcrypt-dev libmhash-dev \
         libncurses5-dev  libreadline-dev bzip2 libcap-dev ntpdate \
         diffutils exim4 iptables unzip sudo cmake re2c bison \
-        libicu-dev net-tools psmisc xz libzip libzip-devel expat-devel
+        libicu-dev net-tools psmisc xz libzip libzip-devel expat-devel cmake libncurses5-dev
 	fi
 }
 

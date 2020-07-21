@@ -23,7 +23,7 @@ function nginx_ins {
     [ $? != 0 ] && err_exit "nginx make err"
     make install
     [ $? != 0 ] && err_exit "nginx install err"
-	[ -e $IN_DIR/nginx ] && [ -L $IN_DIR/nginx ] && rm -f $IN_DIR/nginx
+    [ -e $IN_DIR/nginx ] && [ -L $IN_DIR/nginx ] && rm -f $IN_DIR/nginx
     ln -sf $IN_DIR/nginx-$NGI_VER $IN_DIR/nginx
     mkdir -p $IN_DIR/nginx/conf/{vhost,rewrite,cert}
     mkdir -p /www/{web/default,web_logs}

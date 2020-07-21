@@ -37,7 +37,7 @@ if [ $X86 == 1 ]; then
 fi
 
 # 安装时请修改为自己所安装的版本号
-phps="5.4.45 5.5.38 5.6.40 7.0.33 7.1.33 7.2.29 7.3.16"
+phps="5.4.45 5.5.38 5.6.40 7.0.33 7.1.33 7.2.32 7.3.20 7.4.8"
 if [ $R7 == 0 ];then
 	phps="5.2.17 5.3.29 "${phps}
 fi
@@ -91,6 +91,16 @@ function php_ins {
 	cd $IN_SRC
 	fileurl=$PFF_URL/php/$phpfile && filechk
 	tar zxvf $phpfile || rm -fr php-${phpv}*
+	# if [ $phpd -eq 52 ];then
+	# 	fileurl=$DL_URL/php/php-5.2.17-fpm-0.5.14.diff.gz && filechk
+	# 	gzip -cd php-${phpv}-fpm-0.5.14.diff.gz | patch -fd php-${phpv} -p1
+	# 	fileurl=$DL_URL/php/CVE-ID2015-4024-php52.patch && filechk
+	# 	patch -d php-${phpv} -p1 < CVE-ID2015-4024-php52.patch
+	# fi
+	# if [ $phpd -eq 53 ];then
+	# 	fileurl=$DL_URL/php/CVE-ID2015-4024-php53.patch && filechk
+	# 	patch -d php-${phpv} -p1 < CVE-ID2015-4024-php53.patch
+	# fi
 	cd php-${phpv}
 	[ ! -f configure ] && ./buildconf --force
 	$phpcs

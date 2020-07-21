@@ -10,7 +10,7 @@ function php_ins {
     echo "installing php..."
     cd $IN_SRC
     fileurl=$PHP_URL && filechk
-    tar xf php-$PHP_VER.tar.gz
+    tar xzvf php-$PHP_VER.tar.gz
     if [ $OS_RL == 2 ]; then
         if [ $X86 == 1 ]; then
             ln -sf /usr/lib/x86_64-linux-gnu/libssl.* /usr/lib/

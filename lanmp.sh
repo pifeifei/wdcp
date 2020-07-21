@@ -94,13 +94,15 @@ echo "	1 1.8.1
 	2 1.10.3
 	3 1.12.2
 	4 1.14.2
-	5 1.16.1"
-read -p "   Please Input 1,2,3,4,5: " NGI_ID
+	5 1.16.1
+	6 1.18.0"
+read -p "   Please Input 1,2,3,4,5,6: " NGI_ID
 [ $NGI_ID == 1 ] && NGI_VER="1.8.1"
 [ $NGI_ID == 2 ] && NGI_VER="1.10.3"
 [ $NGI_ID == 3 ] && NGI_VER="1.12.2"
 [ $NGI_ID == 4 ] && NGI_VER="1.14.2"
 [ $NGI_ID == 5 ] && NGI_VER="1.16.1"
+[ $NGI_ID == 6 ] && NGI_VER="1.18.0"
 
 echo
 fi
@@ -109,13 +111,13 @@ fi
 echo -e "\033[31m   Select mysql version \033[0m"
 echo "	1 5.5.63
 	2 5.6.47
-	3 5.7.29"
+	3 5.7.31"
 	#4 8.0.14"
 read -p "   Please Input 1,2,3: " MYS_ID
 [ $MYS_ID == 1 ] && MYS_VER="5.5.63"
 [ $MYS_ID == 2 ] && MYS_VER="5.6.47"
-[ $MYS_ID == 3 ] && MYS_VER="5.7.29"
-#[ $MYS_ID == 4 ] && MYS_VER="8.0.14"
+[ $MYS_ID == 3 ] && MYS_VER="5.7.31"
+[ $MYS_ID == 4 ] && MYS_VER="8.0.14"
 
 echo
 
@@ -126,18 +128,18 @@ echo "	1 5.3.29
         3 5.5.38
         4 5.6.40
         5 7.1.33
-        6 7.2.29
-        7 7.3.16
-        8 7.4.4"
+        6 7.2.32
+        7 7.3.20
+        8 7.4.8"
 read -p "   Please Input 1,2,3,4,5,6,7,8: " PHP_ID
 [ $PHP_ID == 1 ] && PHP_VER="5.3.29"
 [ $PHP_ID == 2 ] && PHP_VER="5.4.45"
 [ $PHP_ID == 3 ] && PHP_VER="5.5.38"
 [ $PHP_ID == 4 ] && PHP_VER="5.6.40"
 [ $PHP_ID == 5 ] && PHP_VER="7.1.33" && P7=1
-[ $PHP_ID == 6 ] && PHP_VER="7.2.29" && P7=1
-[ $PHP_ID == 7 ] && PHP_VER="7.3.16" && P7=1
-[ $PHP_ID == 8 ] && PHP_VER="7.4.4" && P7=1
+[ $PHP_ID == 6 ] && PHP_VER="7.2.32" && P7=1
+[ $PHP_ID == 7 ] && PHP_VER="7.3.20" && P7=1
+[ $PHP_ID == 8 ] && PHP_VER="7.4.8" && P7=1
 fi
  
 # make sure network connection usable.
@@ -169,7 +171,7 @@ if [ $OS_RL == 2 ]; then
         pure-ftpd-mysql 2>/dev/null
     apt-get -y autoremove
     [ -f /etc/mysql/my.cnf ] && mv /etc/mysql/my.cnf /etc/mysql/my.cnf.lanmpsave
-    yun_apt_ins
+    yum_apt_ins
     if [ $X86 == 1 ]; then
         ln -sf /usr/lib/x86_64-linux-gnu/libpng* /usr/lib/
         ln -sf /usr/lib/x86_64-linux-gnu/libjpeg* /usr/lib/
