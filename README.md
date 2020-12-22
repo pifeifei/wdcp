@@ -26,7 +26,9 @@ sh update/nginx-update.sh cus
 
 # 升级 php 到版本 7.2.29
 # * 注: 仅针对 apache, 如需配合nginx, 请使用 sh lib/phps.sh 7.2.29
-sh php-update.sh 7.2.29
+# 选择所安装版本（是 lnmp? lamp? lanmp?）
+sh update/php-update.sh cus
+sh update/php-update.sh 7.2.32
 
 # 为 php 安装 swoole 扩展, 请根据当前 wdcp 安装版本选择
 sh update/php-swoole-install.sh
