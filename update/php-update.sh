@@ -4,7 +4,7 @@
 ########################################
 # use (为指定php版本安装swooole)
 # ./phps.sh all  # install all version
-# ./phps.sh 7.2.22
+# ./phps.sh 7.2.34
 # swoole v1.x    php-v5.3.10 or later
 # swoole v2.0.x  php-v7.0.0  or later
 # swoole v2.x    php-v7.0.0  or later
@@ -88,25 +88,25 @@ echo
 
 ###php
 # wdcp php version: 5.3.29 5.4.45 5.5.38 5.6.38 7.1.25 7.2.15 7.3.2
-# latest php version: 5.3.29 5.4.45 5.5.38 5.6.40 7.1.33 7.2.32 7.3.20 7.4.8
+# latest php version: 5.3.29 5.4.45 5.5.38 5.6.40 7.1.33 7.2.34 7.3.27 7.4.16
 echo -e "\033[31m   Select php version \033[0m"
 echo "	1 5.3.29
         2 5.4.45
         3 5.5.38
         4 5.6.40
         5 7.1.33
-        6 7.2.32
-        7 7.3.20
-        8 7.4.8"
+        6 7.2.34
+        7 7.3.27
+        8 7.4.16"
 read -p "   Please Input 1,2,3,4,5,6,7: " PHP_ID
 [ $PHP_ID == 1 ] && PHP_VER="5.3.29"
 [ $PHP_ID == 2 ] && PHP_VER="5.4.45"
 [ $PHP_ID == 3 ] && PHP_VER="5.5.38"
 [ $PHP_ID == 4 ] && PHP_VER="5.6.40"
 [ $PHP_ID == 5 ] && PHP_VER="7.1.33" && P7=1
-[ $PHP_ID == 6 ] && PHP_VER="7.2.32" && P7=1
-[ $PHP_ID == 7 ] && PHP_VER="7.3.20" && P7=1
-[ $PHP_ID == 7 ] && PHP_VER="7.4.8" && P7=1
+[ $PHP_ID == 6 ] && PHP_VER="7.2.34" && P7=1
+[ $PHP_ID == 7 ] && PHP_VER="7.3.27" && P7=1
+[ $PHP_ID == 7 ] && PHP_VER="7.4.16" && P7=1
 fi
 
 

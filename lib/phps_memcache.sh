@@ -35,7 +35,7 @@ if uname -m | grep -q 'x86_64'; then
 fi
 CPUS=`grep processor /proc/cpuinfo | wc -l`
 
-phps="5.4.45 5.5.38 5.6.40 7.0.33 7.1.33 7.2.32 7.3.20 7.4.8"
+phps="5.4.45 5.5.38 5.6.40 7.0.33 7.1.33 7.2.34 7.3.27 7.4.16"
 if [ $R7 == 0 ];then
 	phps="5.2.17 5.3.29 "${phps}
 fi
@@ -85,7 +85,7 @@ function php_ins {
                     local ext_dir=`/www/wdlinux/phps/$phpd/bin/php-config --extension-dir`
                     echo "
 [memcache]
-extension_dir ="$ext_dir"
+; extension_dir ="$ext_dir"
 extension=memcache.so" >> /www/wdlinux/phps/$phpd/etc/php.ini
                 fi
 		[ -f /www/wdlinux/phps/$phpd/var/log/php-fpm.pid ] && /www/wdlinux/phps/$phpd/bin/php-fpm restart

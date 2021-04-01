@@ -4,11 +4,12 @@
 ########################################
 # use (为指定php版本安装swooole)
 # sh update/php.sh all  # install all version
-# sh update/php.sh 7.2.22
+# sh update/php.sh 7.2.34
 # swoole v1.x    php-v5.3.10 or later
 # swoole v2.0.x  php-v7.0.0  or later
 # swoole v2.x    php-v7.0.0  or later
 # swoole v4.x    php-v7.1.0  or later
+# swoole v4.6.x  php-v7.2.0  or later
 ########################################
 
 
@@ -47,8 +48,10 @@ CPUS=`grep processor /proc/cpuinfo | wc -l`
 swoole110="1.10.5"
 swoole200="2.0.12"
 swoole202="2.2.0"
-swoole404="4.4.16"
-phps="7.2.29 5.4.45 5.5.38 5.6.40 7.0.33 7.1.33 7.3.16 7.4.4"
+swoole404="4.4.24" # 4.4.x 废弃，使用 4.5 or 4.6，使用 PHP 支持的最新版本
+swoole405="4.5.11"
+swoole40X="4.6.4" # latest
+phps="7.2.34 5.4.45 5.5.38 5.6.40 7.0.33 7.1.33 7.3.27 7.4.16"
 if [ $R7 == 0 ];then
 	phps="5.3.29 "${phps}
 fi
@@ -149,8 +152,10 @@ for phpv in $phps; do
 	if [ $phpd -le 52 ];then
 		continue
 	fi
-	if [ $phpd -ge 71 ] ; then
-		swoolev=$swoole404
+	if [ $phpd -ge 72 ] ; then
+		swoolev=$swoole40X
+	elif [ $phpd -ge 71 ] ; then
+		swoolev=$swoole405
 	elif [ $phpd -ge 70 ] ; then
 		swoolev=$swoole202
 	elif [ $phpd -ge 55 ] ; then
