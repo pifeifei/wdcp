@@ -98,7 +98,7 @@ echo "	1 5.3.29
         6 7.2.34
         7 7.3.27
         8 7.4.16"
-read -p "   Please Input 1,2,3,4,5,6,7: " PHP_ID
+read -p "   Please Input 1,2,3,4,5,6,7,8: " PHP_ID
 [ $PHP_ID == 1 ] && PHP_VER="5.3.29"
 [ $PHP_ID == 2 ] && PHP_VER="5.4.45"
 [ $PHP_ID == 3 ] && PHP_VER="5.5.38"

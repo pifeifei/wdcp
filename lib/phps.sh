@@ -125,14 +125,15 @@ function php_ins {
 	else
 		cp php.ini-production $IN_DIR/phps/$phpd/etc/php.ini
 		cp -f sapi/fpm/init.d.php-fpm $IN_DIR/phps/$phpd/bin/php-fpm
-		wget $WD_URL/conf/php/php-fpm.conf -c -O $IN_DIR/phps/$phpd/etc/php-fpm.conf
+		wget $WD_URL/conf/php/php-fpm.conf -c --no-check-certificate -O $IN_DIR/phps/$phpd/etc/php-fpm.conf
         	sed -i 's/{PHPVER}/'$phpd'/g' $IN_DIR/phps/$phpd/etc/php-fpm.conf
 	fi
 	[ -f /www/wdlinux/etc/php.ini ] || ln -s $IN_DIR/phps/$phpd/etc/php.ini /www/wdlinux/etc/php.ini
 	sed -i 's@^short_open_tag = Off@short_open_tag = On@' $IN_DIR/phps/$phpd/etc/php.ini
 	sed -i 's@^;date.timezone.*@date.timezone = Asia/Shanghai@' $IN_DIR/phps/$phpd/etc/php.ini
-        sed -i 's@^post_max_size = 8M@post_max_size = 30M@g' $IN_DIR/phps/$phpd/etc/php.ini
-        sed -i 's@^upload_max_filesize = 2M@upload_max_filesize = 30M@g' $IN_DIR/phps/$phpd/etc/php.ini
+    sed -i 's@^post_max_size = 8M@post_max_size = 30M@g' $IN_DIR/phps/$phpd/etc/php.ini
+    sed -i 's@^upload_max_filesize = 2M@upload_max_filesize = 30M@g' $IN_DIR/phps/$phpd/etc/php.ini
+	sed -i 's@^expose_php = On@expose_php = Off@g' $IN_DIR/phps/$phpd/etc/php.ini
 	chmod 755 $IN_DIR/phps/$phpd/bin/php-fpm
 	if [ $pst == 1 ];then
 		$IN_DIR/phps/$phpd/bin/php-fpm start
@@ -183,12 +184,12 @@ for phpv in $phps; do
 		echo ${phpv}" is Installed"
 		continue
 	fi
-	phpcs="./configure --prefix=/www/wdlinux/phps/"${phpd}" --with-config-file-path=/www/wdlinux/phps/"${phpd}"/etc --enable-fpm --with-fpm-user=www --with-fpm-group=www --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-iconv-dir --with-freetype-dir=/usr --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr --enable-xml --enable-bcmath --enable-shmop --enable-sysvsem --enable-inline-optimization --with-curl=/usr --enable-mbregex --enable-mbstring --with-mcrypt --enable-ftp --with-gd --enable-gd-native-ttf --with-openssl --with-mhash --enable-pcntl --enable-sockets --with-xmlrpc --enable-zip --enable-soap --with-gettext --enable-intl"
+	phpcs="./configure --prefix=/www/wdlinux/phps/"${phpd}" --with-config-file-path=/www/wdlinux/phps/"${phpd}"/etc --enable-fpm --with-fpm-user=www --with-fpm-group=www --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-iconv-dir --with-freetype-dir=/usr --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr --enable-xml --disable-rpath --enable-bcmath --enable-shmop --enable-sysvsem --enable-inline-optimization --with-curl=/usr --enable-mbregex --enable-mbstring --with-mcrypt --enable-ftp --with-gd --enable-gd-native-ttf --with-openssl --with-mhash --enable-pcntl --enable-sockets --with-xmlrpc --enable-zip --enable-soap --with-gettext --enable-intl"
 	if [ $phpd -gt 54 ];then
 		phpcs=$phpcs" --enable-opcache"
 	fi
 	if [ $phpd -eq 52 ];then
-		phpcs="./configure --prefix=$IN_DIR/phps/"${phpd}" --with-config-file-path=$IN_DIR/phps/"${phpd}"/etc --with-mysql=$IN_DIR/mysql --with-iconv=/usr --with-mysqli=$IN_DIR/mysql/bin/mysql_config --with-pdo-mysql=$IN_DIR/mysql --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr --enable-xml --enable-discard-path --enable-inline-optimization --with-curl --enable-mbregex --enable-mbstring --with-mcrypt=/usr --with-gd --enable-gd-native-ttf --with-openssl --with-mhash --enable-ftp --enable-bcmath --enable-exif --enable-sockets --enable-zip --enable-fastcgi --enable-fpm --with-fpm-conf=$IN_DIR/phps/"${phpd}"/etc/php-fpm.conf --with-iconv-dir=/usr"
+		phpcs="./configure --prefix=$IN_DIR/phps/"${phpd}" --with-config-file-path=$IN_DIR/phps/"${phpd}"/etc --with-mysql=$IN_DIR/mysql --with-iconv=/usr --with-mysqli=$IN_DIR/mysql/bin/mysql_config --with-pdo-mysql=$IN_DIR/mysql --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr --enable-xml --disable-rpath --enable-discard-path --enable-inline-optimization --with-curl --enable-mbregex --enable-mbstring --with-mcrypt=/usr --with-gd --enable-gd-native-ttf --with-openssl --with-mhash --enable-ftp --enable-bcmath --enable-exif --enable-sockets --enable-zip --enable-fastcgi --enable-fpm --with-fpm-conf=$IN_DIR/phps/"${phpd}"/etc/php-fpm.conf --with-iconv-dir=/usr"
 	fi
 	if [ $phpd -ge 73 ];then
 		libzip

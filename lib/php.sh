@@ -10,7 +10,7 @@ function php_ins {
     echo "installing php..."
     cd $IN_SRC
     fileurl=$PHP_URL && filechk
-    tar xzvf php-$PHP_VER.tar.gz
+    tar xf php-$PHP_VER.tar.gz
     if [ $OS_RL == 2 ]; then
         if [ $X86 == 1 ]; then
             ln -sf /usr/lib/x86_64-linux-gnu/libssl.* /usr/lib/
@@ -43,6 +43,7 @@ function php_ins {
         --with-freetype-dir --with-jpeg-dir \
         --with-png-dir --with-zlib \
         --with-libxml-dir=/usr --enable-xml \
+        --disable-rpath \
         --enable-inline-optimization --with-curl \
         --enable-mbregex --enable-mbstring \
         --with-mcrypt=/usr --with-gd \
@@ -68,6 +69,7 @@ function php_ins {
     sed -i 's@^;date.timezone.*@date.timezone = Asia/Shanghai@' $IN_DIR/$PHP_DIR/etc/php.ini
     sed -i 's@^post_max_size = 8M@post_max_size = 30M@g' $IN_DIR/$PHP_DIR/etc/php.ini
     sed -i 's@^upload_max_filesize = 2M@upload_max_filesize = 30M@g' $IN_DIR/$PHP_DIR/etc/php.ini
+    sed -i 's@^expose_php = On@expose_php = Off@g' $IN_DIR/$PHP_DIR/etc/php.ini
     
     if [ $SERVER == "nginx" ]; then
         /bin/cp -f sapi/fpm/init.d.php-fpm $IN_DIR/init.d/php-fpm
