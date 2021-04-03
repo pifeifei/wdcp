@@ -38,7 +38,7 @@ function php_ins {
     [ ! -f configure ] && ./buildconf --force
     ./configure --prefix=$IN_DIR/$PHP_DIR \
         --with-config-file-path=$IN_DIR/$PHP_DIR/etc \
-	--enable-mysqlnd --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \
+        --enable-mysqlnd --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \
         --with-iconv-dir=/usr \
         --with-freetype-dir --with-jpeg-dir \
         --with-png-dir --with-zlib \
@@ -47,12 +47,12 @@ function php_ins {
         --enable-inline-optimization --with-curl \
         --enable-mbregex --enable-mbstring \
         --with-mcrypt=/usr --with-gd \
-	--with-xmlrpc --with-gettext \
+        --with-xmlrpc --with-gettext \
         --enable-gd-native-ttf --with-openssl \
         --with-mhash --enable-ftp --enable-intl \
         --enable-bcmath --enable-exif --enable-soap \
-	--enable-shmop --enable-pcntl \
-	--disable-ipv6 --disable-debug \
+        --enable-shmop --enable-pcntl \
+        --disable-ipv6 --disable-debug \
         --enable-sockets --enable-zip --enable-opcache $NV
     [ $? != 0 ] && err_exit "php configure err"
     make ZEND_EXTRA_LIBS='-liconv' -j $CPUS
@@ -62,6 +62,7 @@ function php_ins {
     ln -sf $IN_DIR/$PHP_DIR $IN_DIR/$PHP_DIRS
     rm -rf $IN_DIR/php
     ln -sf $IN_DIR/$PHP_DIRS $IN_DIR/php
+    mkdir -p $IN_DIR/$PHP_DIR/etc
     cp php.ini-production $IN_DIR/$PHP_DIR/etc/php.ini
     rm -f $IN_DIR/etc/php.ini
     ln -sf $IN_DIR/$PHP_DIR/etc/php.ini $IN_DIR/etc/php.ini

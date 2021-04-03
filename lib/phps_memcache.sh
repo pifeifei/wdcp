@@ -62,35 +62,35 @@ function php_ins {
 	local IN_LOG=$LOGPATH/memcaches-install.log
 	echo
 	cd $IN_SRC
-                if [ $P7 == 1 ];then
-                fileurl=$MEMCACHE7_URL && filechk
-                tar zxvf pecl-memcache-php7.tgz
-                cd pecl-memcache-php7
-		make clean
-                else
-                fileurl=$MEMCACHE_URL && filechk
-                tar zxvf memcache-${MEMCACHE_VER}.tgz
-                cd memcache-${MEMCACHE_VER}
-		make clean
-                fi
-                /www/wdlinux/phps/$phpd/bin/phpize
-                ./configure --enable-memcache --with-php-config=/www/wdlinux/phps/$phpd/bin/php-config --with-zlib-dir
-                make -j $CPUS
-                [ $? != 0 ] && err_exit "memcache make err"
-                make install
-                [ $? != 0 ] && err_exit "memcache install err"
+    if [ $P7 == 1 ];then
+        fileurl=$MEMCACHE7_URL && filechk
+        tar zxvf pecl-memcache-php7.tgz
+        cd pecl-memcache-php7
+        make clean
+    else
+        fileurl=$MEMCACHE_URL && filechk
+        tar zxvf memcache-${MEMCACHE_VER}.tgz
+        cd memcache-${MEMCACHE_VER}
+        make clean
+    fi
+    /www/wdlinux/phps/$phpd/bin/phpize
+    ./configure --enable-memcache --with-php-config=/www/wdlinux/phps/$phpd/bin/php-config --with-zlib-dir
+    make -j $CPUS
+    [ $? != 0 ] && err_exit "memcache make err"
+    make install
+    [ $? != 0 ] && err_exit "memcache install err"
 
-                grep -q 'memcache.so' /www/wdlinux/phps/$phpd/etc/php.ini
-                if [ $? != 0 ]; then
-                    local ext_dir=`/www/wdlinux/phps/$phpd/bin/php-config --extension-dir`
-                    echo "
+    grep -q 'memcache.so' /www/wdlinux/phps/$phpd/etc/php.ini
+    if [ $? != 0 ]; then
+        local ext_dir=`/www/wdlinux/phps/$phpd/bin/php-config --extension-dir`
+        echo "
 [memcache]
 ; extension_dir ="$ext_dir"
 extension=memcache.so" >> /www/wdlinux/phps/$phpd/etc/php.ini
-                fi
-		[ -f /www/wdlinux/phps/$phpd/var/log/php-fpm.pid ] && /www/wdlinux/phps/$phpd/bin/php-fpm restart
-		cd $IN_SRC
-		rm -fr memcache-${MEMCACHE_VER}		
+    fi
+    [ -f /www/wdlinux/phps/$phpd/var/log/php-fpm.pid ] && /www/wdlinux/phps/$phpd/bin/php-fpm restart
+    cd $IN_SRC
+    rm -fr memcache-${MEMCACHE_VER}		
 }
 
 function filechk {

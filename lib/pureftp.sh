@@ -30,8 +30,8 @@ function pureftpd_ins {
         --with-welcomemsg  \
         --with-throttling \
         --with-uploadscript \
-	--with-rfc2640 \
-	--with-ftpwho \
+        --with-rfc2640 \
+        --with-ftpwho \
         --with-language=simplified-chinese
     [ $? != 0 ] && err_exit "pureftp configure err"
     make -j $CPUS

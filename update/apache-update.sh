@@ -149,17 +149,7 @@ function cp_config_file {
 	[ -f $apache_old/modules/libphp5.so ] && PHP_OLD_VER=5 && cp $apache_old/modules/libphp5.so "$IN_DIR/httpd-${APA_VER}/modules"
 	[ -f $apache_old/modules/libphp7.so ] && PHP_OLD_VER=7 && cp $apache_old/modules/libphp7.so "$IN_DIR/httpd-${APA_VER}/modules"
 
-# [ -f /www/wdlinux/httpd-2.4.28/modules/libphp5.so ] && PHP_OLD_VER=5 && cp /www/wdlinux/httpd-2.4.28/modules/libphp5.so "/www/wdlinux/httpd-2.4.38/modules"
-# [ -f /www/wdlinux/httpd-2.4.28/modules/libphp7.so ] && PHP_OLD_VER=7 && cp /www/wdlinux/httpd-2.4.28/modules/libphp7.so "/www/wdlinux/httpd-2.4.38/modules"
-	
-# line=`grep -n "rewrite_module" httpd.conf | awk -F: '{print $1}'`
-# line=$((line+1))
-# echo $line
-#cat httpd.conf | grep -v "^#" | grep -v "^$" | grep -v "^    #"
-
-	#LoadModule rewrite_module modules/mod_rewrite.so
-	#LoadModule php5_module        modules/libphp5.so
-	
+    sed -i "s/LoadModule \+php\([57]\)/#\0/g" $IN_DIR/httpd-${APA_VER}/conf/httpd.conf
 	if [ "$PHP_OLD_VER" == 5 ] ; then
 		sed -i "/rewrite_module/a\LoadModule php5_module        modules/libphp5.so" $IN_DIR/httpd-${APA_VER}/conf/httpd.conf
 	elif [ "$PHP_OLD_VER" == 7 ] ; then

@@ -47,6 +47,7 @@ if [ -f $INF/redisp.txt -o -f $INF/memcache.txt ]; then
 	echo " $INF/zend.txt"
 	echo -e "\033[31mrun shell script"
 	echo -e "rm -f $INF/php.txt"
+	echo -e "rm -f $INF/gcc.txt"
 	echo -e "rm -f $INF/redisp.txt"
 	echo -e "rm -f $INF/memcache.txt"
 	echo -e "rm -f $INF/zend.txt"
@@ -106,7 +107,7 @@ read -p "   Please Input 1,2,3,4,5,6,7,8: " PHP_ID
 [ $PHP_ID == 5 ] && PHP_VER="7.1.33" && P7=1
 [ $PHP_ID == 6 ] && PHP_VER="7.2.34" && P7=1
 [ $PHP_ID == 7 ] && PHP_VER="7.3.27" && P7=1
-[ $PHP_ID == 7 ] && PHP_VER="7.4.16" && P7=1
+[ $PHP_ID == 8 ] && PHP_VER="7.4.16" && P7=1
 fi
 
 

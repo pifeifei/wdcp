@@ -81,7 +81,8 @@ function yum_apt_ins {
         freetype-devel libxml2-devel libjpeg-devel libpng-devel openssl-devel xz \
         curl-devel patch libmcrypt-devel libmhash-devel ncurses-devel bzip2 \
         libcap-devel ntp sysklogd diffutils sendmail iptables unzip cmake wget logrotate \
-	re2c bison icu libicu libicu-devel net-tools psmisc vim-enhanced xz libzip libzip-devel expat-devel
+        re2c bison icu libicu libicu-devel net-tools psmisc vim-enhanced xz libzip libzip-devel \
+        expat-devel sqlite-devel oniguruma-devel
 	else
 		apt-get install -y gcc g++ make autoconf libltdl-dev libgd2-xpm-dev \
         libfreetype6 libfreetype6-dev libxml2-dev libjpeg-dev libpng12-dev \

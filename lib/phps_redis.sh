@@ -108,7 +108,7 @@ function err_exit {
 
 for phpv in $phps; do
 	phpd=${phpv:0:1}${phpv:2:1}
-        if [ ! -d $IN_DIR/phps/$phpd ];then
+    if [ ! -d $IN_DIR/phps/$phpd ];then
 		continue
 	fi
 	if [ $phpd == "52" ];then
