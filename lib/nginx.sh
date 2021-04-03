@@ -34,6 +34,7 @@ function nginx_ins {
     file_cp fcgi.conf $IN_DIR/nginx/conf/fcgi.conf
     file_cp nginx.conf $IN_DIR/nginx/conf/nginx.conf
     #file_cp wdcp_n.conf $IN_DIR/nginx/conf/wdcp.conf
+    [ ! -d $IN_DIR/wdcp_bk/conf ] && mkdir -p $IN_DIR/wdcp_bk/conf
     file_cp defaultn.conf $IN_DIR/wdcp_bk/conf/defaultn.conf
     file_cpv defaultn.conf $IN_DIR/nginx/conf/vhost/00000.default.conf
     file_cp dz7_nginx.conf $IN_DIR/nginx/conf/rewrite/dz7_nginx.conf

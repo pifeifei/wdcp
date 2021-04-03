@@ -165,6 +165,10 @@ function cp_config_file {
 	elif [ "$PHP_OLD_VER" == 7 ] ; then
 		sed -i "/rewrite_module/a\LoadModule php7_module        modules/libphp7.so" $IN_DIR/httpd-${APA_VER}/conf/httpd.conf
 	fi
+
+    rm -f /www/web/default/phpinfo.php
+    rm -f /www/web/default/iProber2.php
+    rm -f /www/web/default/index.php
 }
 
 # start services

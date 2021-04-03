@@ -39,7 +39,7 @@ function error {
 }
 
 function file_cp {
-    #[ -f $2 ] && mv $2 ${2}$(date +%Y%m%d%H)
+    [ -f $2 ] && mv $2 ${2}$(date +%Y%m%d%H%M%S)
     cd $IN_PWD/conf
     [ -f $1 ] && cp -f $1 $2
 }

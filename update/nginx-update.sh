@@ -116,7 +116,7 @@ function na_ins {
 
 
 function in_all {
-    na_ins
+    #na_ins
     #SERVER="nginx";phps_ins
     #zend_ins
     #rm -f $php_inf $eac_inf $zend_inf
@@ -124,12 +124,20 @@ function in_all {
     #zend_ins
     #memcache_ins
     #redis_ins
+    echo
+    nginx_ins
+    file_cp naproxy.conf $IN_DIR/nginx/conf/naproxy.conf
 }
 
 function cp_config_file {
+    echo 'nginx_old: '$nginx_old
 	[ -f $nginx_old/conf/vhost/00000.default.conf ] && rm -f "$IN_DIR/nginx-${NGI_VER}/conf/vhost/00000.default.conf"
 	[ ! -d "$IN_DIR/nginx-${NGI_VER}/conf/vhost/" ] && mkdir -p "$IN_DIR/nginx-${NGI_VER}/conf/vhost/"
 	[ -d $nginx_old ] && cp -rf $nginx_old/conf/vhost/* "$IN_DIR/nginx-${NGI_VER}/conf/vhost/"
+
+    rm -f /www/web/default/phpinfo.php
+    rm -f /www/web/default/iProber2.php
+    rm -f /www/web/default/index.php
 }
 
 function nginx_in_finsh {
