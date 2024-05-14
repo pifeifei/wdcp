@@ -17,13 +17,13 @@ set -eo pipefail
 
 
 if [ -f $INF/nginx.txt -o -f $INF/na.txt  ]; then
-	echo ""
-	echo "To upgrade, delete the $INF/nginx.txt and $INF/na.txt file first"
-	echo -e "\033[31mrun shell script"
-	echo -e "rm -f $INF/nginx.txt"
-	echo -e "rm -f $INF/na.txt"
+    echo ""
+    echo "To upgrade, delete the $INF/nginx.txt and $INF/na.txt file first"
+    echo -e "\033[31mrun shell script"
+    echo -e "rm -f $INF/nginx.txt"
+    echo -e "rm -f $INF/na.txt"
     echo -e "      \033[0m"
-	exit 0
+    exit 0
 fi
 ###
 ###
@@ -93,7 +93,7 @@ else
         ln -sf /usr/lib64/libpng.so /usr/lib/
     fi
     ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-    ntpdate tiger.sina.com.cn > /dev/null 2>&1 && echo 
+    ntpdate tiger.sina.com.cn > /dev/null 2>&1 && echo
     hwclock -w
 fi
 
@@ -131,9 +131,11 @@ function in_all {
 
 function cp_config_file {
     echo 'nginx_old: '$nginx_old
-	[ -f $nginx_old/conf/vhost/00000.default.conf ] && rm -f "$IN_DIR/nginx-${NGI_VER}/conf/vhost/00000.default.conf"
-	[ ! -d "$IN_DIR/nginx-${NGI_VER}/conf/vhost/" ] && mkdir -p "$IN_DIR/nginx-${NGI_VER}/conf/vhost/"
-	[ -d $nginx_old ] && cp -rf $nginx_old/conf/vhost/* "$IN_DIR/nginx-${NGI_VER}/conf/vhost/"
+    [ -f $nginx_old/conf/vhost/00000.default.conf ] && rm -f "$IN_DIR/nginx-${NGI_VER}/conf/vhost/00000.default.conf"
+    [ ! -d "$IN_DIR/nginx-${NGI_VER}/conf/vhost/" ] && mkdir -p "$IN_DIR/nginx-${NGI_VER}/conf/vhost/"
+    [ -d $nginx_old ] && cp -rf $nginx_old/conf/vhost/* "$IN_DIR/nginx-${NGI_VER}/conf/vhost/"
+    mkdir -p "$IN_DIR/nginx-${NGI_VER}/conf/cert/"
+    [ -d $nginx_old ] && cp -rf $nginx_old/conf/cert/* "$IN_DIR/nginx-${NGI_VER}/conf/cert/"
 
     rm -f /www/web/default/phpinfo.php
     rm -f /www/web/default/iProber2.php
@@ -144,17 +146,17 @@ function nginx_in_finsh {
     [ -f $conf_inf ] && return
     echo
     echo "starting..."
-	port_use_80=`netstat -ant | grep :80 | wc -l`
+    port_use_80=`netstat -ant | grep :80 | wc -l`
     if [ $port_use_80 == 0 ]; then
         service nginxd start
-	fi
-	echo
+    fi
+    echo
     echo -e "      \033[31mCongratulations ,nginx install is complete"
-	[[ $port_use_80 > 0 ]] && echo -e "      Port 80 is occupied, please switch nginx service manually"
+    [[ $port_use_80 > 0 ]] && echo -e "      Port 80 is occupied, please switch nginx service manually"
     echo -e "      visit http://ip"
     echo -e "      more infomation please visit https://github.com/pifeifei/wdcp/ \033[0m"
     echo
-    
+
 }
 
 ###install
@@ -166,7 +168,7 @@ if [ $SERVER == "all" ]; then
     in_all
 else
     ${SERVER}_ins
-    #php_ins 
+    #php_ins
     ##zend_ins
     #memcache_ins
     #redis_ins

@@ -17,13 +17,13 @@ set -eo pipefail
 
 
 if [ -f $INF/apache.txt -o -f $INF/na.txt  ]; then
-	echo ""
-	echo "To upgrade, delete the $INF/apache.txt and $INF/na.txt file first"
-	echo -e "\033[31mrun shell script"
-	echo -e "rm -f $INF/apache.txt"
-	echo -e "rm -f $INF/na.txt"
+    echo ""
+    echo "To upgrade, delete the $INF/apache.txt and $INF/na.txt file first"
+    echo -e "\033[31mrun shell script"
+    echo -e "rm -f $INF/apache.txt"
+    echo -e "rm -f $INF/na.txt"
     echo -e "      \033[0m"
-	exit 0
+    exit 0
 fi
 ###
 ###
@@ -73,7 +73,7 @@ if [ $OS_RL == 2 ]; then
     apt-get remove -y apache2 apache2-utils apache2.2-common apache2.2-bin \
         apache2-mpm-prefork apache2-doc apache2-mpm-worker  2>/dev/null
     apt-get -y autoremove
-    
+
     yun_apt_ins
     if [ $X86 == 1 ]; then
         ln -sf /usr/lib/x86_64-linux-gnu/libpng* /usr/lib/
@@ -91,7 +91,7 @@ else
         ln -sf /usr/lib64/libpng.so /usr/lib/
     fi
     ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
-    ntpdate tiger.sina.com.cn > /dev/null 2>&1 && echo 
+    ntpdate tiger.sina.com.cn > /dev/null 2>&1 && echo
     hwclock -w
 fi
 
@@ -103,7 +103,7 @@ if [ $SERVER == "apache" ]; then
     wget_down $HTTPD_DU
 elif [ $SERVER == "nginx" ]; then
     echo "mast be is apache. "
-	exit
+    exit
 fi
 
 function na_ins {
@@ -143,18 +143,20 @@ function in_all {
 }
 
 function cp_config_file {
-	[ -f $apache_old/conf/vhost/00000.default.conf ] && rm -f "$IN_DIR/httpd-${APA_VER}/conf/vhost/00000.default.conf"
-	[ ! -d "$IN_DIR/httpd-${APA_VER}/conf/vhost/" ] && mkdir -p "$IN_DIR/httpd-${APA_VER}/conf/vhost/"
-	[ -d $apache_old ] && cp -rf $apache_old/conf/vhost/* "$IN_DIR/httpd-${APA_VER}/conf/vhost/"
-	[ -f $apache_old/modules/libphp5.so ] && PHP_OLD_VER=5 && cp $apache_old/modules/libphp5.so "$IN_DIR/httpd-${APA_VER}/modules"
-	[ -f $apache_old/modules/libphp7.so ] && PHP_OLD_VER=7 && cp $apache_old/modules/libphp7.so "$IN_DIR/httpd-${APA_VER}/modules"
+    [ -f $apache_old/conf/vhost/00000.default.conf ] && rm -f "$IN_DIR/httpd-${APA_VER}/conf/vhost/00000.default.conf"
+    [ ! -d "$IN_DIR/httpd-${APA_VER}/conf/vhost/" ] && mkdir -p "$IN_DIR/httpd-${APA_VER}/conf/vhost/"
+    [ -d $apache_old ] && cp -rf $apache_old/conf/vhost/* "$IN_DIR/httpd-${APA_VER}/conf/vhost/"
+    mkdir -p "$IN_DIR/httpd-${APA_VER}/conf/cert/"
+    [ -d $apache_old ] && cp -rf $apache_old/conf/cert/* "$IN_DIR/httpd-${APA_VER}/conf/cert/"
+    [ -f $apache_old/modules/libphp5.so ] && PHP_OLD_VER=5 && cp $apache_old/modules/libphp5.so "$IN_DIR/httpd-${APA_VER}/modules"
+    [ -f $apache_old/modules/libphp7.so ] && PHP_OLD_VER=7 && cp $apache_old/modules/libphp7.so "$IN_DIR/httpd-${APA_VER}/modules"
 
     sed -i "s/LoadModule \+php\([57]\)/#\0/g" $IN_DIR/httpd-${APA_VER}/conf/httpd.conf
-	if [ "$PHP_OLD_VER" == 5 ] ; then
-		sed -i "/rewrite_module/a\LoadModule php5_module        modules/libphp5.so" $IN_DIR/httpd-${APA_VER}/conf/httpd.conf
-	elif [ "$PHP_OLD_VER" == 7 ] ; then
-		sed -i "/rewrite_module/a\LoadModule php7_module        modules/libphp7.so" $IN_DIR/httpd-${APA_VER}/conf/httpd.conf
-	fi
+    if [ "$PHP_OLD_VER" == 5 ] ; then
+        sed -i "/rewrite_module/a\LoadModule php5_module        modules/libphp5.so" $IN_DIR/httpd-${APA_VER}/conf/httpd.conf
+    elif [ "$PHP_OLD_VER" == 7 ] ; then
+        sed -i "/rewrite_module/a\LoadModule php7_module        modules/libphp7.so" $IN_DIR/httpd-${APA_VER}/conf/httpd.conf
+    fi
 
     rm -f /www/web/default/phpinfo.php
     rm -f /www/web/default/iProber2.php
@@ -166,14 +168,14 @@ function start_srv {
     [ -f $conf_inf ] && return
     echo
     echo "starting..."
-    
-	service httpd start
-    
-	if [ $R7 == 1 ];then
-	systemctl stop firewalld.service
-	systemctl disable firewalld.service
-	systemctl restart iptables.service
-	systemctl enable iptables.service
+
+    service httpd start
+
+    if [ $R7 == 1 ];then
+    systemctl stop firewalld.service
+    systemctl disable firewalld.service
+    systemctl restart iptables.service
+    systemctl enable iptables.service
     fi
 }
 
@@ -198,7 +200,7 @@ if [ $SERVER == "all" ]; then
     in_all
 else
     ${SERVER}_ins
-    #php_ins 
+    #php_ins
     ##zend_ins
     #memcache_ins
     #redis_ins
