@@ -1,4 +1,12 @@
 # nginx install function
+###
+ # @Author: kis龍 pifeifei1989@qq.com
+ # @Date: 2020-07-21 11:01:07
+ # @LastEditors: kis龍 pifeifei1989@qq.com
+ # @LastEditTime: 2025-02-26 15:53:13
+ # @FilePath: \wdcp\lib\nginx.sh
+ # @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+###
 function nginx_ins {
     local IN_LOG=$LOGPATH/${logpre}_nginx_install.log
     [ -f $nginx_inf ] && return
@@ -13,10 +21,11 @@ function nginx_ins {
     sed -i 's@CFLAGS="$CFLAGS -g"@#CFLAGS="$CFLAGS -g"@' auto/cc/gcc
     ./configure --user=www --group=www \
         --prefix=$IN_DIR/nginx-$NGI_VER \
-	--with-http_stub_status_module \
-	--with-ipv6 \
-	--with-http_gzip_static_module \
-	--with-http_realip_module \
+        --conf-path=$IN_DIR/nginx-$NGI_VER/conf/nginx.conf \
+        --with-http_stub_status_module \
+        --with-ipv6 \
+        --with-http_gzip_static_module \
+        --with-http_realip_module \
         --with-http_ssl_module
     [ $? != 0 ] && err_exit "nginx configure err"
     make -j $CPUS
