@@ -5,7 +5,7 @@ IN_SRC=${IN_PWD}/src
 IN_DIR="/www/wdlinux"
 IN_LOG=${IN_PWD}/logs
 INF=${IN_PWD}/inf
-DL_URL="http://dl.wdlinux.cn"
+DL_URL="http://dl.wdcp.net"
 WD_URL="http://www.wdlinux.cn"
 [ ! -d $IN_SRC ] && mkdir -p $IN_SRC
 [ ! -d $IN_DIR ] && mkdir -p $IN_DIR/phps
@@ -32,7 +32,7 @@ if uname -m | grep -q 'x86_64'; then
 fi
 CPUS=`grep processor /proc/cpuinfo | wc -l`
 
-phps="5.4.45 5.5.38 5.6.40 7.0.33 7.1.33 7.2.34 7.3.27 7.4.16"
+phps="5.4.45 5.5.38 5.6.40 7.0.33 7.1.33 7.2.34 7.3.33 7.4.33 8.2.13"
 if [ $R7 == 0 ];then
 	phps="5.2.17 5.3.29 "${phps}
 fi
@@ -49,7 +49,7 @@ else
 	if [ $PHPIS == "quit" ];then
 		exit
 	elif [ $PHPIS == "all" ];then
-		echo ""	
+		echo ""
 	else
 		phps=$PHPIS
 	fi
@@ -97,7 +97,7 @@ function php54 {
         fileurl=${DL_URL}/files/zend/ZendGuardLoader-70429-PHP-5.4-linux-glibc23-i386.tar.gz && filechk
         tar xzf ZendGuardLoader-70429-PHP-5.4-linux-glibc23-i386.tar.gz
         cp ZendGuardLoader-70429-PHP-5.4-linux-glibc23-i386/php-5.4.x/ZendGuardLoader.so $ext_dir
-        rm -rf ZendGuardLoader-70429-PHP-5.4-linux-glibc23-i386	
+        rm -rf ZendGuardLoader-70429-PHP-5.4-linux-glibc23-i386
 	fi
 }
 function php55 {
@@ -110,7 +110,7 @@ function php55 {
         fileurl=${DL_URL}/files/zend/zend-loader-php5.5-linux-i386.tar.gz && filechk
         tar xzf zend-loader-php5.5-linux-i386.tar.gz
         cp zend-loader-php5.5-linux-i386/ZendGuardLoader.so $ext_dir
-        rm -rf zend-loader-php5.5-linux-i386	
+        rm -rf zend-loader-php5.5-linux-i386
 	fi
 }
 function php56 {
@@ -123,7 +123,7 @@ function php56 {
         fileurl=${DL_URL}"/files/zend/zend-loader-php5.6-linux-i386.tar.gz" && filechk
         tar zxvf zend-loader-php5.6-linux-i386.tar.gz
         cp zend-loader-php5.6-linux-i386/ZendGuardLoader.so $ext_dir
-        rm -fr zend-loader-php5.6-linux-i386	
+        rm -fr zend-loader-php5.6-linux-i386
 	fi
 }
 

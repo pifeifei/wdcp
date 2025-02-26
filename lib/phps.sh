@@ -6,7 +6,7 @@ IN_DIR="/www/wdlinux"
 IN_LOG=${IN_PWD}/logs
 INF=${IN_PWD}/inf
 PFF_URL="http://dl.pifeifei.com/files"
-DL_URL="http://dl.wdlinux.cn/files"
+DL_URL="http://dl.wdcp.net/files"
 WD_URL="http://www.wdlinux.cn"
 [ ! -d $IN_SRC ] && mkdir -p $IN_SRC
 [ ! -d $IN_DIR ] && mkdir -p $IN_DIR/phps
@@ -37,123 +37,127 @@ if [ $X86 == 1 ]; then
 fi
 
 # 安装时请修改为自己所安装的版本号
-phps="5.4.45 5.5.38 5.6.40 7.0.33 7.1.33 7.2.34 7.3.27 7.4.16"
+phps="5.4.45 5.5.38 5.6.40 7.0.33 7.1.33 7.2.34 7.3.33 7.4.33 8.2.13"
 if [ $R7 == 0 ];then
-	phps="5.2.17 5.3.29 "${phps}
+    phps="5.2.17 5.3.29 "${phps}
 fi
 
 if [ -n "$1" ];then
-	[[ "${phps[@]/$1/}" == "${phps[@]}" ]] && exit
-	phps=$1
+    [[ "${phps[@]/$1/}" == "${phps[@]}" ]] && exit
+    phps=$1
 else
-	echo -e "\033[31mSelect php version \033[0m"
-	echo $phps | tr -s " " "\n"
-	echo "all"
-	echo "quit"
-	read -p "Please enter: " PHPIS
-	if [ $PHPIS == "quit" ];then
-		exit
-	elif [ $PHPIS == "all" ];then
-		echo ""	
-	else
-		phps=$PHPIS
-	fi
+    echo -e "\033[31mSelect php version \033[0m"
+    echo $phps | tr -s " " "\n"
+    echo "all"
+    echo "quit"
+    read -p "Please enter: " PHPIS
+    if [ $PHPIS == "quit" ];then
+        exit
+    elif [ $PHPIS == "all" ];then
+        echo ""
+    else
+        phps=$PHPIS
+    fi
 fi
 
 #
 if [ $OS_RL == 1 ];then
-	yum install -y gcc gcc-c++ make sudo autoconf libtool-ltdl-devel gd-devel \
+    yum install -y gcc gcc-c++ make sudo autoconf libtool-ltdl-devel gd-devel \
         freetype-devel libxml2-devel libjpeg-devel libpng-devel openssl-devel xz \
         curl-devel patch libmcrypt-devel libmhash-devel ncurses-devel bzip2 \
         libcap-devel ntp sysklogd diffutils sendmail iptables unzip cmake wget \
-		logrotate re2c bison icu libicu libicu-devel net-tools psmisc vim-enhanced \
-		xz libzip libzip-devel expat-devel sqlite-devel oniguruma-devel
+        logrotate re2c bison icu libicu libicu-devel net-tools psmisc vim-enhanced \
+        xz libzip libzip-devel expat-devel sqlite-devel oniguruma-devel libxslt-devel
+        # libsodium-devel libargon2-devel
+        # yum remove -y libsodium-devel libargon2-devel libsodium libargon2
 else
-	apt-get install -y gcc g++ make autoconf libltdl-dev libgd2-xpm-dev \
-       libfreetype6 libfreetype6-dev libxml2-dev libjpeg-dev libpng12-dev \
-       libcurl4-openssl-dev libssl-dev patch libmcrypt-dev libmhash-dev \
-       libncurses5-dev  libreadline-dev bzip2 libcap-dev ntpdate \
-       diffutils exim4 iptables unzip sudo cmake re2c bison \
-       libicu-dev net-tools psmisc xz libzip libzip-devel
+    apt-get install -y gcc g++ make autoconf libltdl-dev libgd2-xpm-dev \
+        libfreetype6 libfreetype6-dev libxml2-dev libjpeg-dev libpng12-dev \
+        libcurl4-openssl-dev libssl-dev patch libmcrypt-dev libmhash-dev \
+        libncurses5-dev  libreadline-dev bzip2 libcap-dev ntpdate \
+        diffutils exim4 iptables unzip sudo cmake re2c bison \
+        libicu-dev net-tools psmisc xz libzip libzip-devel
 fi
 
 
 pst=0
 if [ -n "$2" ];then
-	pst=1
+    pst=1
 fi
 grep wdcp /etc/rc.d/rc.local >/dev/null 2>&1
 [ $? == 1 ] &&  echo "/www/wdlinux/wdcp/phps/start.sh" >> /etc/rc.d/rc.local
 
 function php_ins {
-	local IN_LOG=$LOGPATH/php-$1-install.log
-	echo
-	phpfile="php-${phpv}.tar.gz"
+    local IN_LOG=$LOGPATH/php-$1-install.log
+    echo
+    phpfile="php-${phpv}.tar.gz"
 	cd $IN_SRC
-	fileurl=$PFF_URL/php/$phpfile && filechk
-	tar zxvf $phpfile || rm -fr php-${phpv}*
-	# if [ $phpd -eq 52 ];then
-	# 	fileurl=$DL_URL/php/php-5.2.17-fpm-0.5.14.diff.gz && filechk
-	# 	gzip -cd php-${phpv}-fpm-0.5.14.diff.gz | patch -fd php-${phpv} -p1
-	# 	fileurl=$DL_URL/php/CVE-ID2015-4024-php52.patch && filechk
-	# 	patch -d php-${phpv} -p1 < CVE-ID2015-4024-php52.patch
-	# fi
-	# if [ $phpd -eq 53 ];then
-	# 	fileurl=$DL_URL/php/CVE-ID2015-4024-php53.patch && filechk
-	# 	patch -d php-${phpv} -p1 < CVE-ID2015-4024-php53.patch
-	# fi
-	cd php-${phpv}
-	[ ! -f configure ] && ./buildconf --force
-	$phpcs
-	if [ $phpd -eq 52 ];then
-		ln -s /www/wdlinux/mysql/lib/libmysql* /usr/lib/
-		ldconfig
-	fi
-	[ $? != 0 ] && err_exit "php configure err"
-	make ZEND_EXTRA_LIBS='-liconv' -j $CPUS
-    	[ $? != 0 ] && err_exit "php make err"
-    	make install
-    	[ $? != 0 ] && err_exit "php install err"
-	if [ $phpd -eq 52 ];then
-		cp php.ini-recommended $IN_DIR/phps/$phpd/etc/php.ini
-		ln -sf $IN_DIR/phps/$phpd/sbin/php-fpm $IN_DIR/phps/$phpd/bin/php-fpm
-                sed -i '/nobody/s#<!--##g' $IN_DIR/phps/$phpd/etc/php-fpm.conf
-                sed -i '/nobody/s#-->##g' $IN_DIR/phps/$phpd/etc/php-fpm.conf
-                sed -i 's/>nobody</>www</' $IN_DIR/phps/$phpd/etc/php-fpm.conf
-		sed -i 's/>20</>2</g' $IN_DIR/phps/$phpd/etc/php-fpm.conf
-		sed -i 's/>5</>2</g' $IN_DIR/phps/$phpd/etc/php-fpm.conf
-		sed -i 's#127.0.0.1:9000#/tmp/php-52-cgi.sock#' $IN_DIR/phps/$phpd/etc/php-fpm.conf
-	else
-		cp php.ini-production $IN_DIR/phps/$phpd/etc/php.ini
-		cp -f sapi/fpm/init.d.php-fpm $IN_DIR/phps/$phpd/bin/php-fpm
-		wget $WD_URL/conf/php/php-fpm.conf -c --no-check-certificate -O $IN_DIR/phps/$phpd/etc/php-fpm.conf
-        	sed -i 's/{PHPVER}/'$phpd'/g' $IN_DIR/phps/$phpd/etc/php-fpm.conf
-	fi
-	[ -f /www/wdlinux/etc/php.ini ] || ln -s $IN_DIR/phps/$phpd/etc/php.ini /www/wdlinux/etc/php.ini
-	sed -i 's@^short_open_tag = Off@short_open_tag = On@' $IN_DIR/phps/$phpd/etc/php.ini
-	sed -i 's@^;date.timezone.*@date.timezone = Asia/Shanghai@' $IN_DIR/phps/$phpd/etc/php.ini
+    pwd
+    tar zxvf $phpfile
+    if [ $phpd -eq 52 ];then
+        fileurl=$DL_URL/php/php-5.2.17-fpm-0.5.14.diff.gz && filechk
+        gzip -cd php-${phpv}-fpm-0.5.14.diff.gz | patch -fd php-${phpv} -p1
+        fileurl=$DL_URL/php/CVE-ID2015-4024-php52.patch && filechk
+        patch -d php-${phpv} -p1 < CVE-ID2015-4024-php52.patch
+    fi
+    if [ $phpd -eq 53 ];then
+        fileurl=$DL_URL/php/CVE-ID2015-4024-php53.patch && filechk
+        patch -d php-${phpv} -p1 < CVE-ID2015-4024-php53.patch
+    fi
+    cd php-${phpv}
+    [ ! -f configure ] && ./buildconf --force
+    $phpcs
+    if [ $phpd -eq 52 ];then
+        ln -s /www/wdlinux/mysql/lib/libmysql* /usr/lib/
+        ldconfig
+    fi
+    [ $? != 0 ] && err_exit "php configure err"
+    make ZEND_EXTRA_LIBS='-liconv' -j $CPUS
+    [ $? != 0 ] && err_exit "php make err"
+    make install
+    [ $? != 0 ] && err_exit "php install err"
+    if [ $phpd -eq 52 ];then
+        cp php.ini-recommended $IN_DIR/phps/$phpd/etc/php.ini
+        ln -sf $IN_DIR/phps/$phpd/sbin/php-fpm $IN_DIR/phps/$phpd/bin/php-fpm
+        sed -i '/nobody/s#<!--##g' $IN_DIR/phps/$phpd/etc/php-fpm.conf
+        sed -i '/nobody/s#-->##g' $IN_DIR/phps/$phpd/etc/php-fpm.conf
+        sed -i 's/>nobody</>www</' $IN_DIR/phps/$phpd/etc/php-fpm.conf
+        sed -i 's/>20</>2</g' $IN_DIR/phps/$phpd/etc/php-fpm.conf
+        sed -i 's/>5</>2</g' $IN_DIR/phps/$phpd/etc/php-fpm.conf
+        sed -i 's#127.0.0.1:9000#/tmp/php-52-cgi.sock#' $IN_DIR/phps/$phpd/etc/php-fpm.conf
+    else
+        cp php.ini-production $IN_DIR/phps/$phpd/etc/php.ini
+        cp -f sapi/fpm/init.d.php-fpm $IN_DIR/phps/$phpd/bin/php-fpm
+        wget $WD_URL/conf/php/php-fpm.conf -c --no-check-certificate -O $IN_DIR/phps/$phpd/etc/php-fpm.conf
+        sed -i 's/{PHPVER}/'$phpd'/g' $IN_DIR/phps/$phpd/etc/php-fpm.conf
+    fi
+    [ -f /www/wdlinux/etc/php.ini ] || ln -s $IN_DIR/phps/$phpd/etc/php.ini /www/wdlinux/etc/php.ini
+    sed -i 's@^short_open_tag = Off@short_open_tag = On@' $IN_DIR/phps/$phpd/etc/php.ini
+    sed -i 's@^;date.timezone.*@date.timezone = Asia/Shanghai@' $IN_DIR/phps/$phpd/etc/php.ini
     sed -i 's@^post_max_size = 8M@post_max_size = 30M@g' $IN_DIR/phps/$phpd/etc/php.ini
     sed -i 's@^upload_max_filesize = 2M@upload_max_filesize = 30M@g' $IN_DIR/phps/$phpd/etc/php.ini
-	sed -i 's@^expose_php = On@expose_php = Off@g' $IN_DIR/phps/$phpd/etc/php.ini
-	chmod 755 $IN_DIR/phps/$phpd/bin/php-fpm
-	if [ $pst == 1 ];then
-		$IN_DIR/phps/$phpd/bin/php-fpm start
-	fi
-	cd $IN_SRC
-	rm -fr php-${phpv}
+    sed -i 's@^expose_php = On@expose_php = Off@g' $IN_DIR/phps/$phpd/etc/php.ini
+    chmod 755 $IN_DIR/phps/$phpd/bin/php-fpm
+    if [ $pst == 1 ];then
+        $IN_DIR/phps/$phpd/bin/php-fpm start
+    fi
+    cd $IN_SRC
+    rm -fr php-${phpv}
 }
 
 function libzip {
-	yum remove libzip libzip-devel -y
-	fileurl=$DL_URL/other/libzip-1.2.0.tar.gz && filechk
-	tar zxvf libzip-1.2.0.tar.gz
-	cd libzip-1.2.0
-	./configure --prefix=/usr
-	make
-	[ $? != 0 ] && exit
-	make install
-	[ -f /usr/lib/libzip/include/zipconf.h ] && ln -s /usr/lib/libzip/include/zipconf.h /usr/include/
-	ldconfig
+    yum remove libzip libzip-devel -y
+    cd $IN_SRC
+    fileurl=$DL_URL/other/libzip-$LIBZIP_VER.tar.gz && filechk
+    tar zxvf libzip-$LIBZIP_VER.tar.gz
+    cd libzip-$LIBZIP_VER
+    ./configure
+    make
+    [ $? != 0 ] && exit
+    make install
+    [ -f /usr/lib/libzip/include/zipconf.h ] && ln -s /usr/lib/libzip/include/zipconf.h /usr/include/
+    ldconfig
+    export PKG_CONFIG_PATH="/usr/local/lib/pkgconfig/"
 }
 
 function filechk {
@@ -176,29 +180,42 @@ function err_exit {
     exit
 }
 
+run_once=false
 
 for phpv in $phps; do
-	phpfile="php-${phpv}.tar.gz"
-	#url="http://dl.wdlinux.cn/files/php/${phpfile}"
-	phpd=${phpv:0:1}${phpv:2:1}
-	if [ -f $INF/$phpd".txt" ];then
-		echo ${phpv}" is Installed"
-		continue
-	fi
-	phpcs="./configure --prefix=/www/wdlinux/phps/"${phpd}" --with-config-file-path=/www/wdlinux/phps/"${phpd}"/etc --enable-fpm --with-fpm-user=www --with-fpm-group=www --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-iconv-dir --with-freetype-dir=/usr --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr --enable-xml --disable-rpath --enable-bcmath --enable-shmop --enable-sysvsem --enable-inline-optimization --with-curl=/usr --enable-mbregex --enable-mbstring --with-mcrypt --enable-ftp --with-gd --enable-gd-native-ttf --with-openssl --with-mhash --enable-pcntl --enable-sockets --with-xmlrpc --enable-zip --enable-soap --with-gettext --enable-intl"
-	if [ $phpd -gt 54 ];then
-		phpcs=$phpcs" --enable-opcache"
-	fi
-	if [ $phpd -eq 52 ];then
-		phpcs="./configure --prefix=$IN_DIR/phps/"${phpd}" --with-config-file-path=$IN_DIR/phps/"${phpd}"/etc --with-mysql=$IN_DIR/mysql --with-iconv=/usr --with-mysqli=$IN_DIR/mysql/bin/mysql_config --with-pdo-mysql=$IN_DIR/mysql --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr --enable-xml --disable-rpath --enable-discard-path --enable-inline-optimization --with-curl --enable-mbregex --enable-mbstring --with-mcrypt=/usr --with-gd --enable-gd-native-ttf --with-openssl --with-mhash --enable-ftp --enable-bcmath --enable-exif --enable-sockets --enable-zip --enable-fastcgi --enable-fpm --with-fpm-conf=$IN_DIR/phps/"${phpd}"/etc/php-fpm.conf --with-iconv-dir=/usr"
-	fi
-	if [ $phpd -ge 73 ];then
-		libzip
-	fi
-	php_ins
-	touch $INF/$phpd".txt"
-	echo
-	echo $phpv" install complete"
+    phpfile="php-${phpv}.tar.gz"
+    phpd=${phpv:0:1}${phpv:2:1}
+    if [ -f $INF/$phpd".txt" ];then
+        echo ${phpv}" is Installed"
+        continue
+    fi
+    phpcs="./configure --prefix=/www/wdlinux/phps/"${phpd}" --with-config-file-path=/www/wdlinux/phps/"${phpd}"/etc --enable-fpm --with-fpm-user=www --with-fpm-group=www --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd --with-iconv-dir --with-freetype-dir=/usr --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr --enable-xml --disable-rpath --enable-bcmath --enable-shmop --enable-sysvsem --enable-inline-optimization --with-curl=/usr --enable-mbregex --enable-mbstring --with-mcrypt --enable-ftp --with-gd --enable-gd-native-ttf --with-openssl --with-mhash --enable-pcntl --enable-sockets --with-xmlrpc --enable-zip --enable-soap --with-gettext --disable-fileinfo --enable-intl"
+    if [ $phpd -gt 54 ];then
+        phpcs=$phpcs" --enable-opcache"
+    fi
+    if [ $phpd -eq 52 ];then
+        phpcs="./configure --prefix=$IN_DIR/phps/"${phpd}" --with-config-file-path=$IN_DIR/phps/"${phpd}"/etc --with-mysql=$IN_DIR/mysql --with-iconv=/usr --with-mysqli=$IN_DIR/mysql/bin/mysql_config --with-pdo-mysql=$IN_DIR/mysql --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr --enable-xml --disable-rpath --enable-discard-path --enable-inline-optimization --with-curl --enable-mbregex --enable-mbstring --with-mcrypt=/usr --with-gd --enable-gd-native-ttf --with-openssl --with-mhash --enable-ftp --enable-bcmath --enable-exif --enable-sockets --enable-zip --enable-fastcgi --enable-fpm --with-fpm-conf=$IN_DIR/phps/"${phpd}"/etc/php-fpm.conf --with-iconv-dir=/usr"
+    fi
+    if [ $phpd -ge 73 ];then
+        libzip
+    fi
+    if [ $phpd -eq 82 ];then
+        libzip
+        phpcs="./configure --prefix=$IN_DIR/phps/"${phpd}" --with-config-file-path=$IN_DIR/phps/"${phpd}"/etc \
+            --with-config-file-scan-dir=$IN_DIR/$PHP_DIR/etc/php.d \
+            --with-fpm-user=${run_user} --with-fpm-group=${run_group} --enable-fpm --enable-opcache --disable-fileinfo \
+            --enable-mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \
+            --with-iconv=/usr/local --with-freetype --with-jpeg --with-zlib \
+            --enable-xml --disable-rpath --enable-bcmath --enable-shmop --enable-exif \
+            --enable-sysvsem --with-openssl --enable-mbregex \
+            --enable-mbstring --with-password-argon2 --with-sodium=/usr/local --enable-gd --with-openssl \
+            --with-mhash --enable-pcntl --enable-sockets --enable-ftp --enable-intl --with-xsl \
+            --with-gettext --with-zip=/usr/local --enable-soap --disable-debug"
+    fi
+    php_ins
+    touch $INF/$phpd".txt"
+    echo
+    echo $phpv" install complete"
 done
 
     echo

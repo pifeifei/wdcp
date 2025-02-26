@@ -6,7 +6,7 @@ function pureftpd_ins {
     echo "pureftpd installing..."
     cd $IN_SRC
     fileurl=$PUREFTP_URL && filechk
-    tar xf pure-ftpd-$PUR_VER.tar.gz 
+    tar xf pure-ftpd-$PUR_VER.tar.gz
     cd pure-ftpd-$PUR_VER/
     #export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$IN_DIR/mysql/lib/mysql
     #cp -pR $IN_DIR/mysql/lib/mysql/* /usr/lib/

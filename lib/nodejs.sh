@@ -5,7 +5,7 @@ IN_SRC=${IN_PWD}/src
 IN_DIR="/www/wdlinux"
 IN_LOG=${IN_PWD}/logs
 INF=${IN_PWD}/inf
-DL_URL="http://dl.wdlinux.cn/files/nodejs"
+DL_URL="http://dl.wdcp.net/files/nodejs"
 WD_URL="http://www.wdlinux.cn"
 NODE_FN="node-v10.13.0-linux-x64.tar.xz"
 NODE_URL=${DL_URL}"/"$NODE_FN
@@ -35,28 +35,28 @@ fi
 
 
 function node_ins {
-	local IN_LOG=$LOGPATH/nodejs-install.log
-	echo
-	cd $IN_SRC
-    	fileurl=$NODE_URL && filechk
-	xz
-	if [ $? == 1 ];then
-		xz_ins
-	fi
-	tar xvJf node-v10.13.0-linux-x64.tar.xz -C /www/wdlinux/
-	ln -s /www/wdlinux/node-v10.13.0-linux-x64/bin/* /usr/local/bin/
-	npm install -g pm2
-	/www/wdlinux/node-v10.13.0-linux-x64/lib/node_modules/pm2/bin/pm2
-	cd $IN_SRC
+    local IN_LOG=$LOGPATH/nodejs-install.log
+    echo
+    cd $IN_SRC
+        fileurl=$NODE_URL && filechk
+    xz
+    if [ $? == 1 ];then
+        xz_ins
+    fi
+    tar xvJf node-v10.13.0-linux-x64.tar.xz -C /www/wdlinux/
+    ln -s /www/wdlinux/node-v10.13.0-linux-x64/bin/* /usr/local/bin/
+    npm install -g pm2
+    /www/wdlinux/node-v10.13.0-linux-x64/lib/node_modules/pm2/bin/pm2
+    cd $IN_SRC
         rm -fr node*
 }
 
 function xz_ins {
-	if OS_RL == 1 ;then
-		yum install -y xz	
-	else
-		apt-get install -y xz
-	fi
+    if OS_RL == 1 ;then
+        yum install -y xz
+    else
+        apt-get install -y xz
+    fi
 }
 
 function filechk {

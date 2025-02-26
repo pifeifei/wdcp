@@ -5,10 +5,10 @@ function wdcp_ins {
     fileurl=$WDCP_URL && filechk
     fileurl=$PHPMYADMIN_URL && filechk
     mkdir -p /www/wdlinux/wdcp/{logs,data,tmp,rewrite,conf}
-    tar zxvf phpmyadmin4.tar.gz -C /www/web/default
+    tar zxvf phpmyadmin5.tar.gz -C /www/web/default
     pma=$(expr substr "$(echo $RANDOM | md5sum)" 1 8)
-    cp -pR /www/web/default/phpmyadmin4 /www/wdlinux/wdcp/phpmyadmin
-    mv /www/web/default/phpmyadmin4 /www/web/default/pma_${pma}
+    cp -pR /www/web/default/phpmyadmin5 /www/wdlinux/wdcp/phpmyadmin
+    mv /www/web/default/phpmyadmin5 /www/web/default/pma_${pma}
     tar zvxf wdcp_${WDCP_VER}_${BIT}.tar.gz -C /www/wdlinux/wdcp
     cd /www/wdlinux/wdcp
     ln -sf bin/wdcp_${WDCP_VER}_${BIT} wdcp
@@ -26,15 +26,15 @@ function wdcp_ins {
     chkconfig --level 35 wdcp on
     fi
     if [ $NPS == 1 ] && [ ! -z $NPD ];then
-	touch /www/wdlinux/wdcp/phps/vid/$NPD
-	file_cp start.sh /www/wdlinux/wdcp/phps/
-	chmod 755 /www/wdlinux/wdcp/phps/start.sh
+    touch /www/wdlinux/wdcp/phps/vid/$NPD
+    file_cp start.sh /www/wdlinux/wdcp/phps/
+    chmod 755 /www/wdlinux/wdcp/phps/start.sh
         echo $NPDS > /www/wdlinux/wdcp/conf/defp.conf
-    fi 
+    fi
     echo "pma_"${pma} > /www/wdlinux/wdcp/conf/phpmyadmin.conf
     echo "wdlinux.cn" > /www/wdlinux/wdcp/conf/mrpw.conf
     chmod 600 conf/*.conf
-	service wdcp start
+    service wdcp start
     echo $SERVER_ID > /www/wdlinux/wdcp/conf/eng.conf
     file_cp public_html.tar.gz /www/wdlinux/wdcp/data/
     file_cp dz7_apache.conf /www/wdlinux/wdcp/rewrite/

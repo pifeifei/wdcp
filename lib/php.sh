@@ -1,9 +1,6 @@
 # php install function
 function php_ins {
     local IN_LOG=$LOGPATH/${logpre}_php_install.log
-    echo
-    [ -f $php_inf ] && return
-    libiconv_ins
     [ $MHASHIN == 1 ] && mhash_ins
     [ $MCRYPTIN == 1 ] && mcrypt_ins
     echo
@@ -36,7 +33,19 @@ function php_ins {
         PHP_DIRS="def_php"
     fi
     [ ! -f configure ] && ./buildconf --force
-    ./configure --prefix=$IN_DIR/$PHP_DIR \
+    if [ $PHP_VER == "8.2.13"]; then
+        ./configure --prefix=$IN_DIR/$PHP_DIR --with-config-file-path=$IN_DIR/$PHP_DIR/etc \
+            --with-config-file-scan-dir=$IN_DIR/$PHP_DIR/etc/php.d \
+            --with-fpm-user=${run_user} --with-fpm-group=${run_group} --enable-fpm --enable-opcache --disable-fileinfo \
+            --enable-mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \
+            --with-iconv=/usr/local --with-freetype --with-jpeg --with-zlib \
+            --enable-xml --disable-rpath --enable-bcmath --enable-shmop --enable-exif \
+            --enable-sysvsem --with-openssl --enable-mbregex \
+            --enable-mbstring --with-password-argon2 --with-sodium=/usr/local --enable-gd --with-openssl \
+            --with-mhash --enable-pcntl --enable-sockets --enable-ftp --enable-intl --with-xsl \
+            --with-gettext --with-zip=/usr/local --enable-soap --disable-debug
+    else
+        ./configure --prefix=$IN_DIR/$PHP_DIR \
         --with-config-file-path=$IN_DIR/$PHP_DIR/etc \
         --enable-mysqlnd --with-mysql=mysqlnd --with-mysqli=mysqlnd --with-pdo-mysql=mysqlnd \
         --with-iconv-dir=/usr \
@@ -54,10 +63,11 @@ function php_ins {
         --enable-shmop --enable-pcntl \
         --disable-ipv6 --disable-debug \
         --enable-sockets --enable-zip --enable-opcache $NV
+    fi
     [ $? != 0 ] && err_exit "php configure err"
     make ZEND_EXTRA_LIBS='-liconv' -j $CPUS
     [ $? != 0 ] && err_exit "php make err"
-    make install 
+    make install
     [ $? != 0 ] && err_exit "php install err"
     ln -sf $IN_DIR/$PHP_DIR $IN_DIR/$PHP_DIRS
     rm -rf $IN_DIR/php
@@ -71,13 +81,13 @@ function php_ins {
     sed -i 's@^post_max_size = 8M@post_max_size = 30M@g' $IN_DIR/$PHP_DIR/etc/php.ini
     sed -i 's@^upload_max_filesize = 2M@upload_max_filesize = 30M@g' $IN_DIR/$PHP_DIR/etc/php.ini
     sed -i 's@^expose_php = On@expose_php = Off@g' $IN_DIR/$PHP_DIR/etc/php.ini
-    
+
     if [ $SERVER == "nginx" ]; then
         /bin/cp -f sapi/fpm/init.d.php-fpm $IN_DIR/init.d/php-fpm
         /bin/cp -f sapi/fpm/php-fpm.conf $IN_DIR/$PHP_DIR/etc/php-fpm.conf
 	[ $P7 == 1 ] && cp -f $IN_DIR/$PHP_DIR/etc/php-fpm.d/www.conf.default $IN_DIR/$PHP_DIR/etc/php-fpm.d/www.conf
         ln -s $IN_DIR/$PHP_DIR/etc/php-fpm.conf $IN_DIR/etc/php-fpm.conf
-        
+
         chmod 755 $IN_DIR/init.d/php-fpm
 	Checkinitd php-fpm
         if [ $OS_RL == 2 ]; then
@@ -95,5 +105,10 @@ function php_ins {
     #opcache
     cd $IN_SRC
     rm -fr php-$PHP_VER
+    if [ $PHP_VER == "8.2.13"]; then
+        cd /www/wdlinux/php/etc/php-fpm.d
+        cp www.conf.default www.conf
+        /www/wdlinux/php/sbin/php-fpm
+    fi
 }
 

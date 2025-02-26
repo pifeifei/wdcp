@@ -5,7 +5,7 @@ IN_SRC=${IN_PWD}/src
 IN_DIR="/www/wdlinux"
 IN_LOG=${IN_PWD}/logs
 INF=${IN_PWD}/inf
-DL_URL="http://dl.wdlinux.cn/files/memcache"
+DL_URL="http://dl.wdcp.net/files/memcache"
 WD_URL="http://www.wdlinux.cn"
 MEMCACHE_VER="3.0.8"
 MEMCACHE_URL=${DL_URL}"/memcache-"${MEMCACHE_VER}".tgz"
@@ -35,7 +35,7 @@ if uname -m | grep -q 'x86_64'; then
 fi
 CPUS=`grep processor /proc/cpuinfo | wc -l`
 
-phps="5.4.45 5.5.38 5.6.40 7.0.33 7.1.33 7.2.34 7.3.27 7.4.16"
+phps="5.4.45 5.5.38 5.6.40 7.0.33 7.1.33 7.2.34 7.3.33 7.4.33 8.2.13"
 if [ $R7 == 0 ];then
 	phps="5.2.17 5.3.29 "${phps}
 fi
@@ -52,16 +52,16 @@ else
 	if [ $PHPIS == "quit" ];then
 		exit
 	elif [ $PHPIS == "all" ];then
-		echo ""	
+		echo ""
 	else
 		phps=$PHPIS
 	fi
 fi
 
 function php_ins {
-	local IN_LOG=$LOGPATH/memcaches-install.log
-	echo
-	cd $IN_SRC
+    local IN_LOG=$LOGPATH/memcaches-install.log
+    echo
+    cd $IN_SRC
     if [ $P7 == 1 ];then
         fileurl=$MEMCACHE7_URL && filechk
         tar zxvf pecl-memcache-php7.tgz
@@ -85,12 +85,12 @@ function php_ins {
         local ext_dir=`/www/wdlinux/phps/$phpd/bin/php-config --extension-dir`
         echo "
 [memcache]
-; extension_dir ="$ext_dir"
+extension_dir ="$ext_dir"
 extension=memcache.so" >> /www/wdlinux/phps/$phpd/etc/php.ini
     fi
     [ -f /www/wdlinux/phps/$phpd/var/log/php-fpm.pid ] && /www/wdlinux/phps/$phpd/bin/php-fpm restart
     cd $IN_SRC
-    rm -fr memcache-${MEMCACHE_VER}		
+    rm -fr memcache-${MEMCACHE_VER}
 }
 
 function filechk {

@@ -5,7 +5,7 @@ IN_SRC=${IN_PWD}/src
 IN_DIR="/www/wdlinux"
 IN_LOG=${IN_PWD}/logs
 INF=${IN_PWD}/inf
-DL_URL="http://dl.wdlinux.cn/files"
+DL_URL="http://dl.wdcp.net/files"
 WD_URL="http://www.wdlinux.cn"
 [ ! -d $IN_SRC ] && mkdir -p $IN_SRC
 [ ! -d $IN_LOG ] && mkdir -p $IN_LOG
@@ -35,12 +35,12 @@ Cur=$IN_SRC
 cd $Cur
 
 if [ ! -f pcre-8.43.tar.gz ];then
-  wget http://dl.wdlinux.cn/files/other/pcre-8.43.tar.gz
+  wget http://dl.wdcp.net/files/other/pcre-8.43.tar.gz
 fi
 tar zxvf pcre-8.43.tar.gz
 
 if [ ! -f openresty-1.15.8.2.tar.gz ];then
-  wget http://dl.wdlinux.cn/files/nginx/openresty-1.15.8.2.tar.gz
+  wget http://dl.wdcp.net/files/nginx/openresty-1.15.8.2.tar.gz
 fi
 tar zxvf openresty-1.15.8.2.tar.gz
 cd openresty-1.15.8.2

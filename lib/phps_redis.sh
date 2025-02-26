@@ -5,7 +5,7 @@ IN_SRC=${IN_PWD}/src
 IN_DIR="/www/wdlinux"
 IN_LOG=${IN_PWD}/logs
 INF=${IN_PWD}/inf
-DL_URL="http://dl.wdlinux.cn/files/redis"
+DL_URL="http://dl.wdcp.net/files/redis"
 WD_URL="http://www.wdlinux.cn"
 REDISP_URL=${DL_URL}"/develop.zip"
 [ ! -d $IN_SRC ] && mkdir -p $IN_SRC
@@ -33,33 +33,33 @@ if uname -m | grep -q 'x86_64'; then
 fi
 CPUS=`grep processor /proc/cpuinfo | wc -l`
 
-phps="5.4.45 5.5.38 5.6.40 7.0.33 7.1.33 7.2.34 7.3.27 7.4.16"
+phps="5.4.45 5.5.38 5.6.40 7.0.33 7.1.33 7.2.34 7.3.33 7.4.33 8.2.13"
 if [ $R7 == 0 ];then
-	phps="5.2.17 5.3.29 "${phps}
+    phps="5.2.17 5.3.29 "${phps}
 fi
 
 if [ -n "$1" ];then
-	[[ "${phps[@]/$1/}" == "${phps[@]}" ]] && exit
-	phps=$1
+    [[ "${phps[@]/$1/}" == "${phps[@]}" ]] && exit
+    phps=$1
 else
-	echo -e "\033[31mSelect php version \033[0m"
-	echo $phps | tr -s " " "\n"
-	echo "all"
-	echo "quit"
-	read -p "Please enter: " PHPIS
-	if [ $PHPIS == "quit" ];then
-		exit
-	elif [ $PHPIS == "all" ];then
-		echo ""	
-	else
-		phps=$PHPIS
-	fi
+    echo -e "\033[31mSelect php version \033[0m"
+    echo $phps | tr -s " " "\n"
+    echo "all"
+    echo "quit"
+    read -p "Please enter: " PHPIS
+    if [ $PHPIS == "quit" ];then
+        exit
+    elif [ $PHPIS == "all" ];then
+        echo ""
+    else
+        phps=$PHPIS
+    fi
 fi
 
 function php_ins {
-	local IN_LOG=$LOGPATH/redis-install.log
-	echo
-	cd $IN_SRC
+    local IN_LOG=$LOGPATH/redis-install.log
+    echo
+    cd $IN_SRC
     fileurl=$REDISP_URL && filechk
     if [ ! -d phpredis-develop ];then
     unzip develop.zip
@@ -77,7 +77,7 @@ function php_ins {
     local ext_dir=`/www/wdlinux/phps/$phpd/bin/php-config --extension-dir`
     echo "
 [redis]
-; extension_dir ="$ext_dir"
+extension_dir ="$ext_dir"
 extension=redis.so" >> /www/wdlinux/phps/$phpd/etc/php.ini
     fi
     cd $IN_SRC
@@ -107,17 +107,17 @@ function err_exit {
 
 
 for phpv in $phps; do
-	phpd=${phpv:0:1}${phpv:2:1}
-    if [ ! -d $IN_DIR/phps/$phpd ];then
-		continue
-	fi
-	if [ $phpd == "52" ];then
-		continue
-	fi
-	php_ins
-	touch $INF/$phpd".txt"
-	echo
-	echo $phpv" redis install complete"
+    phpd=${phpv:0:1}${phpv:2:1}
+        if [ ! -d $IN_DIR/phps/$phpd ];then
+        continue
+    fi
+    if [ $phpd == "52" ];then
+        continue
+    fi
+    php_ins
+    touch $INF/$phpd".txt"
+    echo
+    echo $phpv" redis install complete"
 done
 
     echo

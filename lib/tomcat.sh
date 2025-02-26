@@ -5,7 +5,7 @@ IN_SRC=${IN_PWD}/src
 IN_DIR="/www/wdlinux"
 IN_LOG=${IN_PWD}/logs
 INF=${IN_PWD}/inf
-DL_URL="http://dl.wdlinux.cn/files/java"
+DL_URL="http://dl.wdcp.net/files/java"
 WD_URL="http://www.wdlinux.cn"
 JDK_FN="jdk-8u202-linux-i586.tar.gz"
 TOMCAT_FN="apache-tomcat-8.5.38.tar.gz"
@@ -34,46 +34,46 @@ if uname -m | grep -q 'x86_64'; then
 fi
 
 function jdk_ins {
-	local IN_LOG=$LOGPATH/jdk-install.log
-	echo
-	cd $IN_SRC
-	if [ $X86 == 1 ];then
-    		JDK_FN="jdk-8u202-linux-x64.tar.gz"
-		JDK_URL=${DL_URL}"/"$JDK_FN
-    		fileurl=$JDK_URL && filechk
-		tar zxvf $JDK_FN -C /www/wdlinux/
-	else
-		JDK_URL=${DL_URL}"/"$JDK_FN
-    		fileurl=$JDK_URL && filechk
-		tar zxvf $JDK_FN -C /www/wdlinux/
-	fi
-	ln -s /www/wdlinux/jdk1.8.0_202 /www/wdlinux/jdk
-	echo `export JAVA_HOME=/www/wdlinux/jdk1.8.0_202
+    local IN_LOG=$LOGPATH/jdk-install.log
+    echo
+    cd $IN_SRC
+    if [ $X86 == 1 ];then
+        JDK_FN="jdk-8u202-linux-x64.tar.gz"
+        JDK_URL=${DL_URL}"/"$JDK_FN
+        fileurl=$JDK_URL && filechk
+        tar zxvf $JDK_FN -C /www/wdlinux/
+    else
+        JDK_URL=${DL_URL}"/"$JDK_FN
+        fileurl=$JDK_URL && filechk
+        tar zxvf $JDK_FN -C /www/wdlinux/
+    fi
+    ln -s /www/wdlinux/jdk1.8.0_202 /www/wdlinux/jdk
+    echo `export JAVA_HOME=/www/wdlinux/jdk1.8.0_202
 export JAVA_BIN=/www/wdlinux/jdk1.8.0_202/bin
 export PATH=${JAVA_HOME}/bin:$PATH
 export CLASSPATH=.:${JAVA_HOME}/lib/dt.jar:${JAVA_HOME}/lib/tools.jar` >> /etc/profile
-	source /etc/profile
-	cd $IN_SRC
-	rm -fr jdk*
+    source /etc/profile
+    cd $IN_SRC
+    rm -fr jdk*
 }
 
 
 function tomcat_ins {
-	local IN_LOG=$LOGPATH/tomcat-install.log
-	echo
-	cd $IN_SRC
-    	fileurl=$TOMCAT_URL && filechk
-	tar -zxvf apache-tomcat-8.5.38.tar.gz -C /www/wdlinux/
-	ln -s /www/wdlinux/apache-tomcat-8.5.38 /www/wdlinux/tomcat
-	cd /www/wdlinux/tomcat
-	sed -i 's@8080@8008@' conf/server.xml
-	wget -O /www/wdlinux/init.d/tomcat $WD_URL/conf/init.d/init.tomcat
-	chmod 755 /www/wdlinux/init.d/tomcat
-	ln -s /www/wdlinux/init.d/tomcat /etc/init.d/tomcat
-	chkconfig --add tomcat
-	chkconfig --level 35 tomcat on
-	service tomcat start
-	cd $IN_SRC
+    local IN_LOG=$LOGPATH/tomcat-install.log
+    echo
+    cd $IN_SRC
+    fileurl=$TOMCAT_URL && filechk
+    tar -zxvf apache-tomcat-8.5.38.tar.gz -C /www/wdlinux/
+    ln -s /www/wdlinux/apache-tomcat-8.5.38 /www/wdlinux/tomcat
+    cd /www/wdlinux/tomcat
+    sed -i 's@8080@8008@' conf/server.xml
+    wget -O /www/wdlinux/init.d/tomcat $WD_URL/conf/init.d/init.tomcat
+    chmod 755 /www/wdlinux/init.d/tomcat
+    ln -s /www/wdlinux/init.d/tomcat /etc/init.d/tomcat
+    chkconfig --add tomcat
+    chkconfig --level 35 tomcat on
+    service tomcat start
+    cd $IN_SRC
     rm -fr apache_tomcat*
 }
 

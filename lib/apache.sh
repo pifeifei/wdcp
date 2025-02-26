@@ -21,7 +21,7 @@ function apache_ins {
     [ $? != 0 ] && err_exit "apache configure err"
     make -j $CPUS
     [ $? != 0 ] && err_exit "apache make err"
-    make install 
+    make install
     [ $? != 0 ] && err_exit "apache install err"
     [ -e $IN_DIR/apache ] && [ -L $IN_DIR/apache ] && rm -f $IN_DIR/apache
     ln -sf $IN_DIR/httpd-$APA_VER $IN_DIR/apache
@@ -42,7 +42,7 @@ function apache_ins {
     sed -i '/#ServerName/a\
 ServerName localhost
 ' $IN_DIR/apache/conf/httpd.conf
-    mkdir -p /www/{web/default,web_logs}    
+    mkdir -p /www/{web/default,web_logs}
     file_cp phpinfo.php /www/web/default/phpinfo.php
     file_cp iProber2.php /www/web/default/iProber2.php
     file_cp wdlinux_a.php /www/web/default/index.php

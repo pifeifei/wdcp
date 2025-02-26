@@ -4,11 +4,17 @@
 # Created by wdlinux QQ:12571192
 # Url:http://www.wdlinux.cn
 # Since 2010.04.08
-# 
+#
 
 . lib/common.conf
 . lib/common.sh
+. lib/memory.sh
+. lib/check_os.sh
+. lib/openssl.sh
+. lib/check_sw.sh
+. lib/jemalloc.sh
 . lib/mysql.sh
+. lib/mysql8.sh
 . lib/mysql57.sh
 . lib/apache.sh
 . lib/nginx.sh
@@ -34,6 +40,15 @@
 [ -d $IN_SRC ] || mkdir $IN_SRC
 [ -d $LOGPATH ] || mkdir $LOGPATH
 [ -d $INF ] || mkdir $INF
+
+# 获取当前路径
+current_path=$(pwd)
+
+# 将当前路径保存为全局变量
+export GLOBAL_PATH="$current_path"
+
+# 输出全局变量的值
+echo "全局路径: $GLOBAL_PATH"
 
 if [ "$1" == "un" -o "$1" == "uninstall" ]; then
     service httpd stop
@@ -90,47 +105,38 @@ fi
 if [ "$SERVER_ID" != 1 ];then
 ###nginx
 echo -e "\033[31m   Select nginx version \033[0m"
-echo "	1 1.8.1
-	2 1.10.3
-	3 1.12.2
-	4 1.14.2
-	5 1.16.1
-	6 1.18.0"
-read -p "   Please Input 1,2,3,4,5,6: " NGI_ID
-[ $NGI_ID == 1 ] && NGI_VER="1.8.1"
-[ $NGI_ID == 2 ] && NGI_VER="1.10.3"
-[ $NGI_ID == 3 ] && NGI_VER="1.12.2"
-[ $NGI_ID == 4 ] && NGI_VER="1.14.2"
-[ $NGI_ID == 5 ] && NGI_VER="1.16.1"
-[ $NGI_ID == 6 ] && NGI_VER="1.18.0"
+echo "	1 1.14.2
+	2 1.16.1
+	3 1.24.1"
+read -p "   Please Input 1,2,3: " NGI_ID
+[ $NGI_ID == 1 ] && NGI_VER="1.14.2"
+[ $NGI_ID == 2 ] && NGI_VER="1.16.1"
+[ $NGI_ID == 3 ] && NGI_VER="1.24.1"
 
 echo
 fi
 
 ###mysql
 echo -e "\033[31m   Select mysql version \033[0m"
-echo "	1 5.5.63
-	2 5.6.47
-	3 5.7.31"
-	#4 8.0.14"
-read -p "   Please Input 1,2,3: " MYS_ID
-[ $MYS_ID == 1 ] && MYS_VER="5.5.63"
-[ $MYS_ID == 2 ] && MYS_VER="5.6.47"
-[ $MYS_ID == 3 ] && MYS_VER="5.7.31"
-[ $MYS_ID == 4 ] && MYS_VER="8.0.14"
+echo "	1 5.7
+        2 8.0"
+read -p "   Please Input 1,2: " MYS_ID
+[ $MYS_ID == 1 ] && MYS_VER="5.7.43"
+[ $MYS_ID == 2 ] && MYS_VER="8.0.33"
 
 echo
 
 ###php
 echo -e "\033[31m   Select php version \033[0m"
 echo "	1 5.3.29
-        2 5.4.45
-        3 5.5.38
-        4 5.6.40
-        5 7.1.33
-        6 7.2.34
-        7 7.3.27
-        8 7.4.16"
+    2 5.4.45
+    3 5.5.38
+    4 5.6.40
+    5 7.1.33
+    6 7.2.34
+    7 7.3.33
+    8 7.4.33
+    9 8.2.13"
 read -p "   Please Input 1,2,3,4,5,6,7,8: " PHP_ID
 [ $PHP_ID == 1 ] && PHP_VER="5.3.29"
 [ $PHP_ID == 2 ] && PHP_VER="5.4.45"
@@ -138,18 +144,19 @@ read -p "   Please Input 1,2,3,4,5,6,7,8: " PHP_ID
 [ $PHP_ID == 4 ] && PHP_VER="5.6.40"
 [ $PHP_ID == 5 ] && PHP_VER="7.1.33" && P7=1
 [ $PHP_ID == 6 ] && PHP_VER="7.2.34" && P7=1
-[ $PHP_ID == 7 ] && PHP_VER="7.3.27" && P7=1
-[ $PHP_ID == 8 ] && PHP_VER="7.4.16" && P7=1
+[ $PHP_ID == 7 ] && PHP_VER="7.3.33" && P7=1
+[ $PHP_ID == 8 ] && PHP_VER="7.4.33" && P7=1
+[ $PHP_ID == 9 ] && PHP_VER="8.2.13" && P7=1
 fi
- 
+
 # make sure network connection usable.
-ping -c 1 -t 1 dl.wdlinux.cn >/dev/null 2>&1
+ping -c 1 -t 1 dl.wdcp.net >/dev/null 2>&1
 if [[ $? == 2 ]]; then
     echo "nameserver 114.114.114.114
 nameserver 202.96.128.68" > /etc/resolv.conf
     echo "dns err"
 fi
-ping -c 1 -t 1 dl.wdlinux.cn >/dev/null 2>&1
+ping -c 1 -t 1 dl.wdcp.net >/dev/null 2>&1
 if [[ $? == 2 ]]; then
     echo "dns err"
     exit
@@ -157,6 +164,20 @@ fi
 
 if [ $OS_RL == 1 ]; then
     sed -i 's/^exclude=/#exclude=/g' /etc/yum.conf
+    case "${Family}" in
+    "rhel")
+      installDepsRHEL 2>&1 | tee ${oneinstack_dir}/install.log
+      . lib/init_RHEL.sh 2>&1 | tee -a ${oneinstack_dir}/install.log
+      ;;
+    "debian")
+      installDepsDebian 2>&1 | tee ${oneinstack_dir}/install.log
+      . lib/init_Debian.sh 2>&1 | tee -a ${oneinstack_dir}/install.log
+      ;;
+    "ubuntu")
+      installDepsUbuntu 2>&1 | tee ${oneinstack_dir}/install.log
+      . lib/init_Ubuntu.sh 2>&1 | tee -a ${oneinstack_dir}/install.log
+      ;;
+  esac
 fi
 
 ###
@@ -243,8 +264,8 @@ wget_down $MYSQL_DU $PHP_DU $EACCELERATOR_DU $VSFTPD_DU $PHPMYADMIN_DU
 function phps_ins {
 	sh ../lib/phps.sh $PHP_VER 1
 	sh ../lib/phps_zend.sh $PHP_VER
-	sh ../lib/phps_memcache.sh $PHP_VER	
-	sh ../lib/phps_redis.sh $PHP_VER	
+	sh ../lib/phps_memcache.sh $PHP_VER
+	sh ../lib/phps_redis.sh $PHP_VER
 }
 
 function in_all {
@@ -252,7 +273,7 @@ function in_all {
     SERVER="nginx";phps_ins
     #zend_ins
     rm -f $php_inf $eac_inf $zend_inf
-    SERVER="apache"; php_ins
+    SERVER="apache"; phps_ins
     zend_ins
     memcache_ins
     redis_ins
@@ -260,8 +281,12 @@ function in_all {
 
 ###install
 geturl
-if [ $MYS_ID == 3 ];then
+Install_Jemalloc
+libiconv_ins
+if [ $MYS_ID == 1 ];then
 	mysql57_ins
+elif [ $MYS_ID == 2 ];then
+    mysql8_ins
 else
 	mysql_ins
 fi
@@ -271,15 +296,14 @@ elif [ $SERVER == "nginx" ];then
     NPD=${PHP_VER:0:1}${PHP_VER:2:1}
     NPDS=${PHP_VER:0:1}${PHP_VER:1:1}${PHP_VER:2:1}
     nginx_ins
-    libiconv_ins
     [ -f /usr/include/mhash.h ] || mhash_ins
     [ -f /usr/include/mcrypt.h ] || mcrypt_ins
-    phps_ins   
+    phps_ins
     memcache_ins
     NPS=1
 else
     ${SERVER}_ins
-    php_ins 
+    phps_ins
     zend_ins
     memcache_ins
     redis_ins

@@ -8,9 +8,9 @@ function redis_ins {
     fileurl=$REDIS_URL && filechk
     tar -zxvf redis-stable.tar.gz
     cd redis-stable
-    make 
+    make
     [ $? != 0 ] && err_exit "redis make err"
-    make install 
+    make install
     [ $? != 0 ] && err_exit "redis install err"
 
     cd utils/
